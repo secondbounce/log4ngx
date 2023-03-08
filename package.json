@@ -22,6 +22,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build-lib": "ng build log4ngx",
+    "build-demo": "ng build demo",
+    "build": "npm run build-lib && npm run build-demo",
     "watch": "ng build log4ngx --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint"
