@@ -1,0 +1,27 @@
+{
+  "name": "log4ngx",
+  "version": "0.1.0",
+  "description": "A Typescript logging framework for Angular projects",
+  "author": "David Geary <david@secondbounce.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secondbounce/log4ngx.git"
+  },
+  "bugs": {
+    "url": "https://github.com/secondbounce/log4ngx/issues"
+  },
+  "keywords": [
+    "angular",
+    "log4",
+    "logging",
+    "typescript"
+  ],
+  "peerDependencies": {
+    "@angular/common": ">=15.0.0",
+    "@angular/core": ">=15.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

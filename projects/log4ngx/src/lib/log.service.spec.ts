@@ -1,0 +1,258 @@
+import { Injector } from '@angular/core';
+import { inject, TestBed } from '@angular/core/testing';
+
+import { AppenderPlaceholders, MockAppender, MockatooAppender, MOCKATOO_APPENDER_TOKEN, MOCK_APPENDER_TOKEN } from './appenders';
+import { Level, LevelValue } from './level';
+import { LogServiceConfig, LOG_SERVICE_CONFIG_TOKEN } from './log-service-config';
+import { LogService } from './log.service';
+import { Logger } from './logger';
+import { Random } from './utility';
+
+const RANDOM_LEVEL_NAME_LENGTH: number = 20;
+const RANDOM_APPENDER_NAME_LENGTH: number = 20;
+const RANDOM_LOGGER_NAME_LENGTH: number = 20;
+const RANDOM_MESSAGE_LENGTH: number = 120;
+const MOCK_LOGGER_NAME: string = 'mockLogger';
+const MOCKATOO_LOGGER_NAME: string = 'mockatooLogger';
+const BOTH_LOGGER_NAME: string = 'bothLogger';
+const BAD_LEVEL_LOGGER_NAME: string = 'bad-level';
+const MISSING_APPENDER_LOGGER_NAME: string = 'missingAppender';
+const MOCK_APPENDER_NAME: string = 'mockAppender';
+const MOCKATOO_APPENDER_NAME: string = 'mockatooAppender';
+const LOG_SERVICE_CONFIG: LogServiceConfig = {
+  loggers: [
+    {
+      loggerName: MOCK_LOGGER_NAME,
+      level: 'info',
+      appenderNames: [
+        MOCK_APPENDER_NAME
+      ]
+    },
+    {
+      loggerName: MOCKATOO_LOGGER_NAME,
+      level: 'info',
+      appenderNames: [
+        MOCKATOO_APPENDER_NAME
+      ]
+    },
+    {
+      loggerName: BOTH_LOGGER_NAME,
+      level: 'info',
+      appenderNames: [
+        MOCK_APPENDER_NAME,
+        MOCKATOO_APPENDER_NAME
+      ]
+    },
+    {
+      loggerName: BAD_LEVEL_LOGGER_NAME,
+      level: Random.getString(RANDOM_LEVEL_NAME_LENGTH),
+      appenderNames: [
+        MOCK_APPENDER_NAME
+      ]
+    },
+    {
+      loggerName: MISSING_APPENDER_LOGGER_NAME,
+      level: 'info',
+      appenderNames: [
+        Random.getString(RANDOM_APPENDER_NAME_LENGTH),
+        MOCK_APPENDER_NAME
+      ]
+    }
+  ],
+  appenders: [
+    {
+      name: MOCK_APPENDER_NAME,
+      providerToken: MOCK_APPENDER_TOKEN,
+      logFormat: MOCK_APPENDER_NAME + ':' + AppenderPlaceholders.Message,  /* So we can check the output easily */
+      exceptionFormat: undefined
+    },
+    {
+      name: MOCKATOO_APPENDER_NAME,
+      providerToken: MOCKATOO_APPENDER_TOKEN,
+      logFormat: MOCKATOO_APPENDER_NAME + ':' + AppenderPlaceholders.Message,  /* So we can check the output easily */
+      exceptionFormat: undefined
+    }
+  ]
+};
+
+describe('LogService', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        LogService,
+        { provide: MOCK_APPENDER_TOKEN, useClass: MockAppender },
+        { provide: MOCKATOO_APPENDER_TOKEN, useClass: MockatooAppender },
+        { provide: LOG_SERVICE_CONFIG_TOKEN, useValue: LOG_SERVICE_CONFIG }
+      ]
+    });
+
+    MockAppender.lastOutput = '';
+    MockatooAppender.lastOutput = '';
+  });
+
+  describe('`getLogger` method', () => {
+    it('should create a new logger if name doesn\'t exist', inject([LogService], (logService: LogService) => {
+      const loggerName: string = Random.getString(RANDOM_LOGGER_NAME_LENGTH);
+      const logger: Logger = logService.getLogger(loggerName);
+
+      expect(logger).toBeDefined();
+      expect(logger.name).toBe(loggerName);
+    }));
+
+    it('should return cached copy of logger if name already exists', inject([LogService], (logService: LogService) => {
+      const loggerName: string = Random.getString(RANDOM_LOGGER_NAME_LENGTH);
+      const logger: Logger = logService.getLogger(loggerName);
+
+      expect(logger).toBeDefined();
+      expect(logService.getLogger(loggerName)).toBe(logger);
+    }));
+  });
+
+  describe('`dispatch` method', () => {
+    it('uses the corresponding `LoggerConfig` if it exists', inject([LogService], (logService: LogService) => {
+      let logger: Logger;
+      let message: string;
+
+      logger = logService.getLogger(MOCK_LOGGER_NAME);
+      message = Random.getString(RANDOM_MESSAGE_LENGTH);
+      logger.info(message);
+      expect(MockAppender.lastOutput).toBe(MOCK_APPENDER_NAME + ':' + message);
+
+      logger = logService.getLogger(MOCKATOO_LOGGER_NAME);
+      message = Random.getString(RANDOM_MESSAGE_LENGTH);
+      logger.info(message);
+      expect(MockatooAppender.lastOutput).toBe(MOCKATOO_APPENDER_NAME + ':' + message);
+    }));
+
+    it('uses the \'root\' `LoggerConfig` if it exists and the named one doesn\'t', inject([Injector], (injector: Injector) => {
+      const logServiceConfig: LogServiceConfig = {
+        loggers: [
+          {
+            loggerName: '',
+            level: 'info',
+            appenderNames: [
+              MOCK_APPENDER_NAME
+            ]
+          },
+          { /* Included so we can check it's unused */
+            loggerName: MOCKATOO_LOGGER_NAME,
+            level: 'info',
+            appenderNames: [
+              MOCKATOO_APPENDER_NAME
+            ]
+          }
+        ],
+        appenders: [
+          {
+            name: MOCK_APPENDER_NAME,
+            providerToken: MOCK_APPENDER_TOKEN,
+            logFormat: MOCK_APPENDER_NAME + ':' + AppenderPlaceholders.Message,  /* So we can check the output easily */
+            exceptionFormat: undefined
+          },
+          { /* Included so we can check it's unused */
+            name: MOCKATOO_APPENDER_NAME,
+            providerToken: MOCKATOO_APPENDER_TOKEN,
+            logFormat: MOCKATOO_APPENDER_NAME + ':' + AppenderPlaceholders.Message,  /* So we can check the output easily */
+            exceptionFormat: undefined
+          }
+        ]
+      };
+      const logService: LogService = new LogService(injector, logServiceConfig);
+      const logger: Logger = logService.getLogger(Random.getString(RANDOM_LOGGER_NAME_LENGTH));
+      const message: string = Random.getString(RANDOM_MESSAGE_LENGTH);
+
+      logger.info(message);
+      expect(MockAppender.lastOutput).toBe(MOCK_APPENDER_NAME + ':' + message);
+      expect(MockatooAppender.lastOutput).toBe('');
+    }));
+
+    it('ignores the dispatch if the named and \'root\' `LoggerConfigs` don\'t exist', inject([Injector], (injector: Injector) => {
+      const logServiceConfig: LogServiceConfig = {
+        loggers: [
+          { /* Included so we can check it's unused */
+            loggerName: MOCK_LOGGER_NAME,
+            level: 'info',
+            appenderNames: [
+              MOCK_APPENDER_NAME
+            ]
+          }
+        ],
+        appenders: [
+          { /* Included so we can check it's unused */
+            name: MOCK_APPENDER_NAME,
+            providerToken: MOCK_APPENDER_TOKEN,
+            logFormat: MOCK_APPENDER_NAME + ':' + AppenderPlaceholders.Message,  /* So we can check the output easily */
+            exceptionFormat: undefined
+          }
+        ]
+      };
+      const logService: LogService = new LogService(injector, logServiceConfig);
+      const logger: Logger = logService.getLogger(Random.getString(RANDOM_LOGGER_NAME_LENGTH));
+      const message: string = Random.getString(RANDOM_MESSAGE_LENGTH);
+
+      logger.info(message);
+      expect(MockAppender.lastOutput).toBe('');
+    }));
+
+    it('ignores the dispatch if the `Level` doesn\'t exist', inject([LogService], (logService: LogService) => {
+      const logger: Logger = logService.getLogger(BAD_LEVEL_LOGGER_NAME);
+      const message: string = Random.getString(RANDOM_MESSAGE_LENGTH);
+
+      logger.info(message);
+      expect(MockAppender.lastOutput).toBe('');
+    }));
+
+    it('uses the configured level to determine log dispatch', inject([LogService], (logService: LogService) => {
+      /* All loggers are configured for Level.info */
+      const belowInfoLevel: Level = Level.add(LevelValue.Info - 1, 'below-info', 'below-info');
+      const aboveInfoLevel: Level = Level.add(LevelValue.Info + 1, 'above-info', 'above-info');
+      const logger: Logger = logService.getLogger(MOCK_LOGGER_NAME);
+      let message: string;
+
+      message = Random.getString(RANDOM_MESSAGE_LENGTH);
+      logger.debug(message);
+      expect(MockAppender.lastOutput).toBe('');
+
+      message = Random.getString(RANDOM_MESSAGE_LENGTH);
+      logger.log(belowInfoLevel.name, message);
+      expect(MockAppender.lastOutput).toBe('');
+
+      message = Random.getString(RANDOM_MESSAGE_LENGTH);
+      logger.info(message);
+      expect(MockAppender.lastOutput).toBe(MOCK_APPENDER_NAME + ':' + message);
+
+      message = Random.getString(RANDOM_MESSAGE_LENGTH);
+      logger.log(aboveInfoLevel.name, message);
+      expect(MockAppender.lastOutput).toBe(MOCK_APPENDER_NAME + ':' + message);
+
+      message = Random.getString(RANDOM_MESSAGE_LENGTH);
+      logger.warn(message);
+      expect(MockAppender.lastOutput).toBe(MOCK_APPENDER_NAME + ':' + message);
+
+      message = Random.getString(RANDOM_MESSAGE_LENGTH);
+      logger.error(message);
+      expect(MockAppender.lastOutput).toBe(MOCK_APPENDER_NAME + ':' + message);
+
+      message = Random.getString(RANDOM_MESSAGE_LENGTH);
+      logger.fatal(message);
+      expect(MockAppender.lastOutput).toBe(MOCK_APPENDER_NAME + ':' + message);
+    }));
+
+    it('can dispatch to multiple `Appender`s', inject([LogService], (logService: LogService) => {
+      const logger: Logger = logService.getLogger(BOTH_LOGGER_NAME);
+      const message: string = Random.getString(RANDOM_MESSAGE_LENGTH);
+
+      logger.info(message);
+      expect(MockAppender.lastOutput).toBe(MOCK_APPENDER_NAME + ':' + message);
+      expect(MockatooAppender.lastOutput).toBe(MOCKATOO_APPENDER_NAME + ':' + message);
+    }));
+
+    it('ignores non-existent `Appender`s during dispatch', inject([LogService], (logService: LogService) => {
+      const logger: Logger = logService.getLogger(MISSING_APPENDER_LOGGER_NAME);
+      const message: string = Random.getString(RANDOM_MESSAGE_LENGTH);
+
+      logger.info(message);
+      expect(MockAppender.lastOutput).toBe(MOCK_APPENDER_NAME + ':' + message);
+    }));
+  });
+});

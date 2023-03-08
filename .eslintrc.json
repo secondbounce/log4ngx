@@ -1,0 +1,168 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "projects/**/*"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parserOptions": {
+        "project": [
+          "tsconfig.json",
+          "projects/log4ngx/tsconfig.spec.json"
+        ],
+        "createDefaultProgram": true
+      },
+      "extends": [
+        "eslint:recommended",                     // https://github.com/eslint/eslint/blob/main/packages/js/src/configs
+        "plugin:@typescript-eslint/recommended",  // https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin/src/configs
+        "plugin:@angular-eslint/recommended",     // https://github.com/angular-eslint/angular-eslint/tree/main/packages/eslint-plugin/src/configs
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:import/recommended"
+      ],
+      "rules": {
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "log",
+            "style": "kebab-case"
+          }
+        ],
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "log",
+            "style": "camelCase"
+          }
+        ],
+        "brace-style": "off",  // Disabled in favour of @typescript-eslint/brace-style
+        "@typescript-eslint/brace-style": [
+          "error",
+          "1tbs",
+          {
+            "allowSingleLine": true
+          }
+        ],
+        "comma-dangle": "off",  // Disabled in favour of @typescript-eslint/comma-dangle
+        "@typescript-eslint/comma-dangle": "warn",
+        "@typescript-eslint/consistent-type-definitions": "error",
+        "@typescript-eslint/explicit-function-return-type": [
+          "error"
+        ],
+        "@typescript-eslint/explicit-member-accessibility": [
+          "error",
+          {
+            "accessibility": "explicit",
+            "overrides": {
+              "accessors": "explicit",
+              "constructors": "no-public"
+            }
+          }
+        ],
+        "@typescript-eslint/naming-convention": [
+          "warn",
+          {
+            "selector": "enumMember",
+            "format": [
+              "StrictPascalCase"
+            ]
+          }
+        ],
+        "@typescript-eslint/no-confusing-non-null-assertion": "warn",
+        "@typescript-eslint/no-empty-interface": "error",
+        "@typescript-eslint/no-for-in-array": "error",
+        "no-implied-eval": "off",  // Disabled in favour of @typescript-eslint/no-implied-eval
+        "@typescript-eslint/no-implied-eval": "error",
+        "@typescript-eslint/no-inferrable-types": [
+          "off"
+        ],
+        "no-magic-numbers": "off",  // Disabled in favour of @typescript-eslint/no-magic-numbers
+        "@typescript-eslint/no-magic-numbers": [
+          "warn",
+          {
+            "ignore": [ 0, 1 ],
+            "ignoreEnums": true,
+            "ignoreReadonlyClassProperties": true
+          }
+        ],
+        "no-useless-constructor": "off",  // Disabled in favour of @typescript-eslint/no-useless-constructor
+        "@typescript-eslint/no-useless-constructor": "warn",
+        "@typescript-eslint/prefer-for-of": "warn",
+        "semi": "off",  // Disabled in favour of @typescript-eslint/semi
+        "@typescript-eslint/semi": [
+          "error",
+          "always",
+          {
+            "omitLastInOneLineBlock": true
+          }
+        ],
+        "@typescript-eslint/typedef": [
+          "error",
+          {
+            "variableDeclaration": true
+          }
+        ],
+        "@typescript-eslint/unbound-method": "error",
+        "curly": "error",
+        "eqeqeq": "error",
+        "import/no-unresolved": "off",
+        "import/order": [
+          "warn",
+          {
+            "alphabetize": {
+              "order": "asc",
+              "caseInsensitive": true
+            },
+            "groups": [
+              "builtin",
+              "external",
+              "internal"
+            ]
+          }
+        ],
+        "max-classes-per-file": [
+          "error",
+          1
+        ],
+        "max-len": [
+          "warn",
+          {
+            "code": 140,
+            "ignoreComments": true,
+            "ignorePattern": "^import ",
+            "ignoreStrings": true,
+            "ignoreTemplateLiterals": true
+          }
+        ],
+        "no-console": "warn",
+        "no-extra-bind": "error",
+        "no-new-func": "error",
+        "no-restricted-syntax": [
+          "error",
+          "ForInStatement"
+        ],
+        "no-return-await": "error",
+        "no-sequences": "error",
+        "no-warning-comments": "warn",
+        "prefer-spread": "warn",
+        "quote-props": [
+          "warn",
+          "as-needed"
+        ]
+      }
+    },
+    {
+      "files": [
+        "*.html"
+      ],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
+      "rules": {}
+    }
+  ]
+}
