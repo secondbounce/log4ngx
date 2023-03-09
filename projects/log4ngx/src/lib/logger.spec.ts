@@ -123,7 +123,10 @@ describe('Logger', () => {
 
 function testLoggerOverloads(logService: MockLogService,
                              logger: Logger,
-                             methodToTest: { (messageOrException: string | Error): void; (message: string, exception: Error): void; },
+                             methodToTest: { (message: string): void;
+                                             (exception: Error): void;
+                                             (message: string, exception: Error): void;
+                                           },
                              level: Level): void {
   let message: string;
   let error: Error;
