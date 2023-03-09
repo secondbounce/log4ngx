@@ -9,6 +9,15 @@
         "*.ts"
       ],
       "rules": {
+        "@angular-eslint/component-class-suffix": [
+          "error",
+          {
+            "suffixes": [
+              "Page",
+              "Component"
+            ]
+          }
+        ],
         "@angular-eslint/component-selector": [
           "error",
           {
