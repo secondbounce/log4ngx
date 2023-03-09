@@ -27,7 +27,17 @@ export class LogService {
     }
   }
 
-  public getLogger(name: string): Logger {
+  public getLogger(name: string): Logger;
+  public getLogger(instance: object): Logger;
+  public getLogger(nameOrObject: string | object): Logger {
+    let name: string;
+
+    if (typeof(nameOrObject) === 'object') {
+      name = nameOrObject.constructor.name ?? '';
+    } else {
+      name = nameOrObject;
+    }
+
     let logger: Logger | undefined = this._loggers.get(name);
 
     if (!logger) {

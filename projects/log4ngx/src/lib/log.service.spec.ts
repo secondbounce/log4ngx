@@ -90,7 +90,7 @@ describe('LogService', () => {
     MockatooAppender.lastOutput = '';
   });
 
-  describe('`getLogger` method', () => {
+  describe('`getLogger(string)` method', () => {
     it('should create a new logger if name doesn\'t exist', inject([LogService], (logService: LogService) => {
       const loggerName: string = Random.getString(RANDOM_LOGGER_NAME_LENGTH);
       const logger: Logger = logService.getLogger(loggerName);
@@ -105,6 +105,33 @@ describe('LogService', () => {
 
       expect(logger).toBeDefined();
       expect(logService.getLogger(loggerName)).toBe(logger);
+    }));
+  });
+
+  describe('`getLogger(object)` method', () => {
+    it('should create a new logger if object\'s type name doesn\'t exist', inject([LogService], (logService: LogService) => {
+      const instance: object = {};
+      const logger: Logger = logService.getLogger(instance);
+
+      expect(logger).toBeDefined();
+      expect(logger.name).toBe('Object');
+    }));
+
+    it('should cache loggers under the object\'s type name', inject([LogService], (logService: LogService) => {
+      const instance: object = new MockAppender();
+      const logger: Logger = logService.getLogger(instance);
+
+      expect(logger).toBeDefined();
+      expect(logger.name).toBe('MockAppender');
+      expect(logService.getLogger('MockAppender')).toBe(logger);
+    }));
+
+    it('should return cached copy of logger if object\'s type name already exists', inject([LogService], (logService: LogService) => {
+      const instance: object = new MockAppender();
+      const logger: Logger = logService.getLogger(instance);
+
+      expect(logger).toBeDefined();
+      expect(logService.getLogger(instance)).toBe(logger);
     }));
   });
 
