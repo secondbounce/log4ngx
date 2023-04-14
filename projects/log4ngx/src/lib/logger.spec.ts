@@ -119,6 +119,76 @@ describe('Logger', () => {
       expect(logService.lastLoggingEvent).toBeUndefined();
     }));
   });
+
+  describe('`assert` method', () => {
+    it('should interpret overloaded arguments correctly', inject([LogService], (logService: MockLogService) => {
+      const logger: Logger = new Logger(Random.getString(RANDOM_STRING_LENGTH), logService);
+
+      /* Can't call testLoggerOverloads() as Logger.assert() takes an extra argument */
+      let message: string;
+      let error: Error;
+      let loggingEvent: LoggingEvent | undefined;
+      let timestamp: number;
+
+      message = Random.getString(RANDOM_STRING_LENGTH);
+      timestamp = Date.now();
+      logger.assert(false, message);
+      loggingEvent = logService.lastLoggingEvent;
+      expect(loggingEvent).toBeDefined();
+      expect(loggingEvent?.level).toBe(Level.error);
+      expect(loggingEvent?.loggerName).toBe(logger.name);
+      expect(loggingEvent?.message).toBe(message);
+      expect(loggingEvent?.exception).toBeUndefined();
+      expect(Math.abs((loggingEvent?.timestamp ?? 0) - timestamp)).toBeLessThan(TEN_MILLISECONDS);
+
+      error = new Error(Random.getString(RANDOM_STRING_LENGTH));
+      timestamp = Date.now();
+      logger.assert(false, error);
+      loggingEvent = logService.lastLoggingEvent;
+      expect(loggingEvent).toBeDefined();
+      expect(loggingEvent?.level).toBe(Level.error);
+      expect(loggingEvent?.loggerName).toBe(logger.name);
+      expect(loggingEvent?.message).toBe('');
+      expect(loggingEvent?.exception).toBe(error);
+      expect(Math.abs((loggingEvent?.timestamp ?? 0) - timestamp)).toBeLessThan(TEN_MILLISECONDS);
+
+      message = Random.getString(RANDOM_STRING_LENGTH);
+      error = new Error(Random.getString(RANDOM_STRING_LENGTH));
+      timestamp = Date.now();
+      logger.assert(false, message, error);
+      loggingEvent = logService.lastLoggingEvent;
+      expect(loggingEvent).toBeDefined();
+      expect(loggingEvent?.level).toBe(Level.error);
+      expect(loggingEvent?.loggerName).toBe(logger.name);
+      expect(loggingEvent?.message).toBe(message);
+      expect(loggingEvent?.exception).toBe(error);
+      expect(Math.abs((loggingEvent?.timestamp ?? 0) - timestamp)).toBeLessThan(TEN_MILLISECONDS);
+    }));
+
+    it('should only log if condition isn\'t true', inject([LogService], (logService: MockLogService) => {
+      const logger: Logger = new Logger(Random.getString(RANDOM_STRING_LENGTH), logService);
+
+      let message: string;
+      let loggingEvent: LoggingEvent | undefined;
+
+      message = Random.getString(RANDOM_STRING_LENGTH);
+      logger.assert(true, message);
+      loggingEvent = logService.lastLoggingEvent;
+      expect(loggingEvent).toBeUndefined();
+
+      message = Random.getString(RANDOM_STRING_LENGTH);
+      logger.assert(false, message);
+      loggingEvent = logService.lastLoggingEvent;
+      expect(loggingEvent).toBeDefined();
+      expect(loggingEvent?.message).toBe(message);
+
+      message = Random.getString(RANDOM_STRING_LENGTH);
+      logger.assert(undefined, message);
+      loggingEvent = logService.lastLoggingEvent;
+      expect(loggingEvent).toBeDefined();
+      expect(loggingEvent?.message).toBe(message);
+    }));
+  });
 });
 
 function testLoggerOverloads(logService: MockLogService,

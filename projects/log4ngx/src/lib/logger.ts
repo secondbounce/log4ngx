@@ -20,6 +20,20 @@ export class Logger {
     */
   }
 
+  /**
+   * Logs the message and/or error if the condition is `true`.
+   *
+   * The log entry is recorded as `Level.error`.
+   */
+  public assert(condition: boolean | undefined, message: string): void;
+  public assert(condition: boolean | undefined, exception: Error): void;
+  public assert(condition: boolean | undefined, message: string, exception: Error): void;
+  public assert(condition: boolean | undefined, messageOrException: string | Error, exception?: Error): void {
+    if (condition !== true) {
+      this.dispatchLoggingEvent(Level.error, messageOrException, exception);
+    }
+  }
+
   public debug(message: string): void;
   public debug(exception: Error): void;
   public debug(message: string, exception: Error): void;
