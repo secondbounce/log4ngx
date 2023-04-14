@@ -61,8 +61,13 @@ describe('Level', () => {
     expect(newLevel?.name).toEqual(name);
   });
 
-  it('returns null for non-existent levels', () => {
-    const nonexistentLevel: Level | undefined = Level.getLevel('£$%^&*(');
+  it('returns undefined for non-existent levels', () => {
+    let nonexistentLevel: Level | undefined;
+
+    nonexistentLevel = Level.getLevel('£$%^&*(');
+    expect(nonexistentLevel).toBeUndefined();
+
+    nonexistentLevel = Level.getLevel('');
     expect(nonexistentLevel).toBeUndefined();
   });
 

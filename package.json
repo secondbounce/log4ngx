@@ -26,6 +26,7 @@
     "build": "npm run build-lib && npm run build-demo",
     "watch": "ng build log4ngx --watch --configuration development",
     "test": "ng test",
+    "test-coverage": "ng test --no-watch --code-coverage",
     "lint": "ng lint"
   },
   "dependencies": {

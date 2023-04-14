@@ -33,7 +33,7 @@ export class LogService {
     let name: string;
 
     if (typeof(nameOrObject) === 'object') {
-      name = nameOrObject.constructor.name ?? '';
+      name = nameOrObject.constructor.name;
     } else {
       name = nameOrObject;
     }
