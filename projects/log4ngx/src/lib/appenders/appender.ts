@@ -2,7 +2,7 @@ import { AppenderConfig } from './appender-config';
 import { LoggingEvent } from '../logging-event';
 
 /** Placeholder constants for use in the `AppenderConfig.logFormat` and/or
- * `AppenderConfig.exceptionFormat` properties.
+ * `AppenderConfig.errorFormat` properties.
  */
 export /*not const*/ enum AppenderPlaceholders {
   /** The `Level.displayName` property. */
@@ -25,23 +25,23 @@ export /*not const*/ enum AppenderPlaceholders {
   Time = '{time}',
   /** The log timestamp converted to UTC format, e.g. 'Mon, 07 Aug 2017 14:53:34 GMT'. */
   UtcDate = '{date-utc}',
-  /** The logged exception (if any), formatted according to `AppenderConfig.exceptionFormat`. */
-  Exception = '{exception}',
-  /** The logged exception's `name` property.
+  /** The logged error (if any), formatted according to `AppenderConfig.errorFormat`. */
+  Error = '{error}',
+  /** The logged Error's `name` property.
    *
-   * Note that this placeholder is only valid within `AppenderConfig.exceptionFormat`.
+   * Note that this placeholder is only valid within `AppenderConfig.errorFormat`.
   */
-  ExceptionName = '{exception-name}',
-  /** The logged exception's `message` property.
+  ErrorName = '{error-name}',
+  /** The logged Error's `message` property.
    *
-   * Note that this placeholder is only valid within `AppenderConfig.exceptionFormat`.
+   * Note that this placeholder is only valid within `AppenderConfig.errorFormat`.
   */
-  ExceptionMessage = '{exception-message}',
-  /** The logged exception's `stack` property.
+  ErrorMessage = '{error-message}',
+  /** The logged Error's `stack` property.
    *
-   * Note that this placeholder is only valid within `AppenderConfig.exceptionFormat`.
+   * Note that this placeholder is only valid within `AppenderConfig.errorFormat`.
   */
-  ExceptionStack = '{exception-stack}',
+  ErrorStack = '{error-stack}',
   /** Carriage return/line feed characters, i.e. '\r\n'. */
   Crlf = '{crlf}',
   /** Linefeed character, i.e. '\n'. */
@@ -51,14 +51,14 @@ export /*not const*/ enum AppenderPlaceholders {
 export abstract class Appender {
   private _name: string = '';
   private _logFormat: string = '';
-  private _exceptionFormat: string = '';
+  private _errorFormat: string = '';
 
   public initialize(config: AppenderConfig): void {
     this._name = config.name;
     this._logFormat = config.logFormat;
-    this._exceptionFormat = config.exceptionFormat || (AppenderPlaceholders.Crlf
-                                                     + AppenderPlaceholders.ExceptionName + ': ' + AppenderPlaceholders.ExceptionMessage + AppenderPlaceholders.Crlf
-                                                     + AppenderPlaceholders.ExceptionStack);
+    this._errorFormat = config.errorFormat || (AppenderPlaceholders.Crlf
+                                             + AppenderPlaceholders.ErrorName + ': ' + AppenderPlaceholders.ErrorMessage + AppenderPlaceholders.Crlf
+                                             + AppenderPlaceholders.ErrorStack);
   }
 
   public get name(): string {
@@ -69,16 +69,12 @@ export abstract class Appender {
     return this._logFormat;
   }
 
-  public get exceptionFormat(): string {
-    return this._exceptionFormat;
+  public get errorFormat(): string {
+    return this._errorFormat;
   }
 
   public append(loggingEvent: LoggingEvent): void {
-    // if (loggingEvent.level.value >= this.threshold.value) {
-      // Checks that the IFilter chain accepts the loggingEvent.
-      // Calls [M:PreAppendCheck()] and checks that it returns true.
-      this.appendEvent(loggingEvent);
-    // }
+    this.appendEvent(loggingEvent);
   }
 
   protected abstract appendEvent(loggingEvent: LoggingEvent): void;
@@ -98,12 +94,12 @@ export abstract class Appender {
     logMessage = logMessage.split(AppenderPlaceholders.Time).join(date.toLocaleTimeString());       // 15:53:34
     logMessage = logMessage.split(AppenderPlaceholders.UtcDate).join(date.toUTCString());           // Mon, 07 Aug 2017 14:53:34 GMT
 
-    let exceptionMessage: string = '';
-    if (loggingEvent.exception) {
-      exceptionMessage = this.renderException(loggingEvent.exception);
+    let errorMessage: string = '';
+    if (loggingEvent.error instanceof Error) {
+      errorMessage = this.renderError(loggingEvent.error);
     }
 
-    logMessage = logMessage.split(AppenderPlaceholders.Exception).join(exceptionMessage);
+    logMessage = logMessage.split(AppenderPlaceholders.Error).join(errorMessage);
 
     logMessage = logMessage.split(AppenderPlaceholders.Crlf).join('\r\n');
     logMessage = logMessage.split(AppenderPlaceholders.Lf).join('\n');
@@ -111,12 +107,12 @@ export abstract class Appender {
     return logMessage;
   }
 
-  protected renderException(exception: Error): string {
-    let logMessage: string = this._exceptionFormat;
+  protected renderError(error: Error): string {
+    let logMessage: string = this._errorFormat;
 
-    logMessage = logMessage.split(AppenderPlaceholders.ExceptionName).join(exception.name);
-    logMessage = logMessage.split(AppenderPlaceholders.ExceptionMessage).join(this.getSafeMessage(exception.message));
-    logMessage = logMessage.split(AppenderPlaceholders.ExceptionStack).join(exception.stack);
+    logMessage = logMessage.split(AppenderPlaceholders.ErrorName).join(error.name);
+    logMessage = logMessage.split(AppenderPlaceholders.ErrorMessage).join(this.getSafeMessage(error.message));
+    logMessage = logMessage.split(AppenderPlaceholders.ErrorStack).join(error.stack);
 
     logMessage = logMessage.split(AppenderPlaceholders.Crlf).join('\r\n');
     logMessage = logMessage.split(AppenderPlaceholders.Lf).join('\n');

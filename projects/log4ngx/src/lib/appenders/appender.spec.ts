@@ -11,7 +11,7 @@ const APPENDER_CONFIG: AppenderConfig = {
   name: 'mockAppender',
   providerToken: MOCK_APPENDER_TOKEN,
   logFormat: '',
-  exceptionFormat: undefined
+  errorFormat: undefined
 };
 const RANDOM_MESSAGE_LENGTH: number = 100;
 
@@ -54,25 +54,25 @@ describe('Base Appender', () => {
     });
   });
 
-  describe('`exceptionFormat` property', () => {
+  describe('`errorFormat` property', () => {
     it('should be stored correctly', () => {
-      const exceptionFormat: string = Random.getString(RANDOM_MESSAGE_LENGTH);
+      const errorFormat: string = Random.getString(RANDOM_MESSAGE_LENGTH);
       const config: AppenderConfig = { ...APPENDER_CONFIG,
-                                       exceptionFormat
+                                       errorFormat: errorFormat
                                      };
       const appender: MockAppender = new MockAppender();
       appender.initialize(config);
-      expect(appender.exceptionFormat).toBe(exceptionFormat);
+      expect(appender.errorFormat).toBe(errorFormat);
     });
 
     it('uses default value if undefined', () => {
-      const exceptionFormat: string | undefined = undefined;
+      const errorFormat: string | undefined = undefined;
       const config: AppenderConfig = { ...APPENDER_CONFIG,
-                                       exceptionFormat
+                                       errorFormat: errorFormat
                                      };
       const appender: MockAppender = new MockAppender();
       appender.initialize(config);
-      expect(appender.exceptionFormat).toBeDefined();
+      expect(appender.errorFormat).toBeDefined();
     });
   });
 
@@ -234,12 +234,12 @@ describe('Base Appender', () => {
       expect(appender.renderLoggingEvent(loggingEvent)).toBe(date.toUTCString());
     });
 
-    it('should render ' + AppenderPlaceholders.ExceptionName + ' using the exception `name` property', () => {
-      const logFormat: string = AppenderPlaceholders.Exception;
-      const exceptionFormat: string = AppenderPlaceholders.ExceptionName;
+    it('should render ' + AppenderPlaceholders.ErrorName + ' using the error `name` property', () => {
+      const logFormat: string = AppenderPlaceholders.Error;
+      const errorFormat: string = AppenderPlaceholders.ErrorName;
       const config: AppenderConfig = { ...APPENDER_CONFIG,
                                        logFormat,
-                                       exceptionFormat
+                                       errorFormat: errorFormat
                                      };
       const appender: MockAppender = new MockAppender();
       appender.initialize(config);
@@ -253,12 +253,12 @@ describe('Base Appender', () => {
       }
     });
 
-    it('should render ' + AppenderPlaceholders.ExceptionMessage + ' using the exception `message` property', () => {
-      const logFormat: string = AppenderPlaceholders.Exception;
-      const exceptionFormat: string = AppenderPlaceholders.ExceptionMessage;
+    it('should render ' + AppenderPlaceholders.ErrorMessage + ' using the error `message` property', () => {
+      const logFormat: string = AppenderPlaceholders.Error;
+      const errorFormat: string = AppenderPlaceholders.ErrorMessage;
       const config: AppenderConfig = { ...APPENDER_CONFIG,
                                        logFormat,
-                                       exceptionFormat
+                                       errorFormat: errorFormat
                                      };
       const appender: MockAppender = new MockAppender();
       appender.initialize(config);
@@ -309,12 +309,12 @@ describe('Base Appender', () => {
       }
     });
 
-    it('should render ' + AppenderPlaceholders.ExceptionStack + ' using the exception `stack` property', () => {
-      const logFormat: string = AppenderPlaceholders.Exception;
-      const exceptionFormat: string = AppenderPlaceholders.ExceptionStack;
+    it('should render ' + AppenderPlaceholders.ErrorStack + ' using the error `stack` property', () => {
+      const logFormat: string = AppenderPlaceholders.Error;
+      const errorFormat: string = AppenderPlaceholders.ErrorStack;
       const config: AppenderConfig = { ...APPENDER_CONFIG,
                                        logFormat,
-                                       exceptionFormat
+                                       errorFormat: errorFormat
                                      };
       const appender: MockAppender = new MockAppender();
       appender.initialize(config);
@@ -344,12 +344,12 @@ describe('Base Appender', () => {
       Error.stackTraceLimit = previousLimit;
     });
 
-    it('should ignore exception if not specified in logFormat', () => {
+    it('should ignore error if not specified in logFormat', () => {
       const logFormat: string = AppenderPlaceholders.Message;
-      const exceptionFormat: string = AppenderPlaceholders.ExceptionName;
+      const errorFormat: string = AppenderPlaceholders.ErrorName;
       const config: AppenderConfig = { ...APPENDER_CONFIG,
                                        logFormat,
-                                       exceptionFormat
+                                       errorFormat: errorFormat
                                      };
       const appender: MockAppender = new MockAppender();
       appender.initialize(config);
@@ -383,21 +383,21 @@ describe('Base Appender', () => {
       expect(appender.renderLoggingEvent(loggingEvent)).toBe(result);
     });
 
-    it('should render literal content and CR/LF in `exceptionFormat`', () => {
+    it('should render literal content and CR/LF in `errorFormat`', () => {
       const prefix: string = ' ' + Random.getString(RANDOM_MESSAGE_LENGTH) + ' ';
       const line1: string = ' ' + Random.getString(RANDOM_MESSAGE_LENGTH) + ' ';
       const line2: string = ' ' + Random.getString(RANDOM_MESSAGE_LENGTH) + ' ';
       const line3: string = ' ' + Random.getString(RANDOM_MESSAGE_LENGTH) + ' ';
       const suffix: string = ' ' + Random.getString(RANDOM_MESSAGE_LENGTH) + ' ';
-      const logFormat: string = prefix + AppenderPlaceholders.Exception + suffix;
-      const exceptionFormat: string = AppenderPlaceholders.Lf
-                                    + line1 + AppenderPlaceholders.Crlf
-                                    + line2 + AppenderPlaceholders.Lf
-                                    + line3 + AppenderPlaceholders.Crlf;
+      const logFormat: string = prefix + AppenderPlaceholders.Error + suffix;
+      const errorFormat: string = AppenderPlaceholders.Lf
+                                + line1 + AppenderPlaceholders.Crlf
+                                + line2 + AppenderPlaceholders.Lf
+                                + line3 + AppenderPlaceholders.Crlf;
       const result: string = prefix + '\n' + line1 + '\r\n' + line2 + '\n' + line3 + '\r\n' + suffix;
       const config: AppenderConfig = { ...APPENDER_CONFIG,
                                        logFormat,
-                                       exceptionFormat
+                                       errorFormat: errorFormat
                                      };
       const appender: MockAppender = new MockAppender();
       appender.initialize(config);

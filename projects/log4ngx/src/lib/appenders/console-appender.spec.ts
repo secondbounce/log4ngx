@@ -13,7 +13,7 @@ const APPENDER_CONFIG: ConsoleAppenderConfig = {
   name: 'consoleAppender',
   providerToken: CONSOLE_APPENDER_TOKEN,
   logFormat: AppenderPlaceholders.Message,
-  exceptionFormat: undefined
+  errorFormat: undefined
 };
 const RANDOM_LEVEL_NAME_LENGTH: number = 20;
 const RANDOM_MESSAGE_LENGTH: number = 150;

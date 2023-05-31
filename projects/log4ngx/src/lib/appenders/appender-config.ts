@@ -6,5 +6,5 @@ export interface AppenderConfig {
   name: string;
   providerToken: InjectionToken<Appender>;
   logFormat: string;
-  exceptionFormat?: string;
+  errorFormat?: string;
 }

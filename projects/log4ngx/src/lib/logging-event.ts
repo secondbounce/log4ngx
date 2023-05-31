@@ -6,6 +6,6 @@ export class LoggingEvent {
   constructor(public level: Level,
               public loggerName: string,
               public message: string,
-              public exception?: Error) {
+              public error?: Error) {
   }
 }

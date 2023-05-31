@@ -64,13 +64,13 @@ const LOG_SERVICE_CONFIG: LogServiceConfig = {
       name: MOCK_APPENDER_NAME,
       providerToken: MOCK_APPENDER_TOKEN,
       logFormat: MOCK_APPENDER_NAME + ':' + AppenderPlaceholders.Message,  /* So we can check the output easily */
-      exceptionFormat: undefined
+      errorFormat: undefined
     },
     {
       name: MOCKATOO_APPENDER_NAME,
       providerToken: MOCKATOO_APPENDER_TOKEN,
       logFormat: MOCKATOO_APPENDER_NAME + ':' + AppenderPlaceholders.Message,  /* So we can check the output easily */
-      exceptionFormat: undefined
+      errorFormat: undefined
     }
   ]
 };
@@ -174,13 +174,13 @@ describe('LogService', () => {
             name: MOCK_APPENDER_NAME,
             providerToken: MOCK_APPENDER_TOKEN,
             logFormat: MOCK_APPENDER_NAME + ':' + AppenderPlaceholders.Message,  /* So we can check the output easily */
-            exceptionFormat: undefined
+            errorFormat: undefined
           },
           { /* Included so we can check it's unused */
             name: MOCKATOO_APPENDER_NAME,
             providerToken: MOCKATOO_APPENDER_TOKEN,
             logFormat: MOCKATOO_APPENDER_NAME + ':' + AppenderPlaceholders.Message,  /* So we can check the output easily */
-            exceptionFormat: undefined
+            errorFormat: undefined
           }
         ]
       };
@@ -209,7 +209,7 @@ describe('LogService', () => {
             name: MOCK_APPENDER_NAME,
             providerToken: MOCK_APPENDER_TOKEN,
             logFormat: MOCK_APPENDER_NAME + ':' + AppenderPlaceholders.Message,  /* So we can check the output easily */
-            exceptionFormat: undefined
+            errorFormat: undefined
           }
         ]
       };

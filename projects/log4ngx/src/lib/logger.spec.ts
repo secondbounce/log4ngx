@@ -83,7 +83,7 @@ describe('Logger', () => {
       expect(loggingEvent?.level).toBe(Level.info);
       expect(loggingEvent?.loggerName).toBe(logger.name);
       expect(loggingEvent?.message).toBe(message);
-      expect(loggingEvent?.exception).toBeUndefined();
+      expect(loggingEvent?.error).toBeUndefined();
       expect(Math.abs((loggingEvent?.timestamp ?? 0) - timestamp)).toBeLessThan(TEN_MILLISECONDS);
 
       error = new Error(Random.getString(RANDOM_STRING_LENGTH));
@@ -94,7 +94,7 @@ describe('Logger', () => {
       expect(loggingEvent?.level).toBe(Level.info);
       expect(loggingEvent?.loggerName).toBe(logger.name);
       expect(loggingEvent?.message).toBe('');
-      expect(loggingEvent?.exception).toBe(error);
+      expect(loggingEvent?.error).toBe(error);
       expect(Math.abs((loggingEvent?.timestamp ?? 0) - timestamp)).toBeLessThan(TEN_MILLISECONDS);
 
       message = Random.getString(RANDOM_STRING_LENGTH);
@@ -106,7 +106,7 @@ describe('Logger', () => {
       expect(loggingEvent?.level).toBe(Level.info);
       expect(loggingEvent?.loggerName).toBe(logger.name);
       expect(loggingEvent?.message).toBe(message);
-      expect(loggingEvent?.exception).toBe(error);
+      expect(loggingEvent?.error).toBe(error);
       expect(Math.abs((loggingEvent?.timestamp ?? 0) - timestamp)).toBeLessThan(TEN_MILLISECONDS);
     }));
 
@@ -138,7 +138,7 @@ describe('Logger', () => {
       expect(loggingEvent?.level).toBe(Level.error);
       expect(loggingEvent?.loggerName).toBe(logger.name);
       expect(loggingEvent?.message).toBe(message);
-      expect(loggingEvent?.exception).toBeUndefined();
+      expect(loggingEvent?.error).toBeUndefined();
       expect(Math.abs((loggingEvent?.timestamp ?? 0) - timestamp)).toBeLessThan(TEN_MILLISECONDS);
 
       error = new Error(Random.getString(RANDOM_STRING_LENGTH));
@@ -149,7 +149,7 @@ describe('Logger', () => {
       expect(loggingEvent?.level).toBe(Level.error);
       expect(loggingEvent?.loggerName).toBe(logger.name);
       expect(loggingEvent?.message).toBe('');
-      expect(loggingEvent?.exception).toBe(error);
+      expect(loggingEvent?.error).toBe(error);
       expect(Math.abs((loggingEvent?.timestamp ?? 0) - timestamp)).toBeLessThan(TEN_MILLISECONDS);
 
       message = Random.getString(RANDOM_STRING_LENGTH);
@@ -161,7 +161,7 @@ describe('Logger', () => {
       expect(loggingEvent?.level).toBe(Level.error);
       expect(loggingEvent?.loggerName).toBe(logger.name);
       expect(loggingEvent?.message).toBe(message);
-      expect(loggingEvent?.exception).toBe(error);
+      expect(loggingEvent?.error).toBe(error);
       expect(Math.abs((loggingEvent?.timestamp ?? 0) - timestamp)).toBeLessThan(TEN_MILLISECONDS);
     }));
 
@@ -194,8 +194,8 @@ describe('Logger', () => {
 function testLoggerOverloads(logService: MockLogService,
                              logger: Logger,
                              methodToTest: { (message: string): void;
-                                             (exception: Error): void;
-                                             (message: string, exception: Error): void;
+                                             (error: Error): void;
+                                             (message: string, error: Error): void;
                                            },
                              level: Level): void {
   let message: string;
@@ -211,7 +211,7 @@ function testLoggerOverloads(logService: MockLogService,
   expect(loggingEvent?.level).toBe(level);
   expect(loggingEvent?.loggerName).toBe(logger.name);
   expect(loggingEvent?.message).toBe(message);
-  expect(loggingEvent?.exception).toBeUndefined();
+  expect(loggingEvent?.error).toBeUndefined();
   expect(Math.abs((loggingEvent?.timestamp ?? 0) - timestamp)).toBeLessThan(TEN_MILLISECONDS);
 
   error = new Error(Random.getString(RANDOM_STRING_LENGTH));
@@ -222,7 +222,7 @@ function testLoggerOverloads(logService: MockLogService,
   expect(loggingEvent?.level).toBe(level);
   expect(loggingEvent?.loggerName).toBe(logger.name);
   expect(loggingEvent?.message).toBe('');
-  expect(loggingEvent?.exception).toBe(error);
+  expect(loggingEvent?.error).toBe(error);
   expect(Math.abs((loggingEvent?.timestamp ?? 0) - timestamp)).toBeLessThan(TEN_MILLISECONDS);
 
   message = Random.getString(RANDOM_STRING_LENGTH);
@@ -234,6 +234,6 @@ function testLoggerOverloads(logService: MockLogService,
   expect(loggingEvent?.level).toBe(level);
   expect(loggingEvent?.loggerName).toBe(logger.name);
   expect(loggingEvent?.message).toBe(message);
-  expect(loggingEvent?.exception).toBe(error);
+  expect(loggingEvent?.error).toBe(error);
   expect(Math.abs((loggingEvent?.timestamp ?? 0) - timestamp)).toBeLessThan(TEN_MILLISECONDS);
 }

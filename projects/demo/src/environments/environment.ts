@@ -18,8 +18,8 @@ export const environment: Environment = {
       {
         name: 'console',
         providerToken: CONSOLE_APPENDER_TOKEN,
-        logFormat: `${AppenderPlaceholders.Level} ${AppenderPlaceholders.Logger} ${AppenderPlaceholders.Message}${AppenderPlaceholders.Exception}`,
-        exceptionFormat: undefined
+        logFormat: `${AppenderPlaceholders.Level} ${AppenderPlaceholders.Logger} ${AppenderPlaceholders.Message}${AppenderPlaceholders.Error}`,
+        errorFormat: undefined
       }
     ]
   }
