@@ -195,7 +195,7 @@ function testLoggerOverloads(logService: MockLogService,
                              logger: Logger,
                              methodToTest: { (message: string): void;
                                              (error: Error): void;
-                                             (message: string, error: Error): void;
+                                             (message: string, error: Error | object): void;
                                            },
                              level: Level): void {
   let message: string;
@@ -235,5 +235,24 @@ function testLoggerOverloads(logService: MockLogService,
   expect(loggingEvent?.loggerName).toBe(logger.name);
   expect(loggingEvent?.message).toBe(message);
   expect(loggingEvent?.error).toBe(error);
+  expect(Math.abs((loggingEvent?.timestamp ?? 0) - timestamp)).toBeLessThan(TEN_MILLISECONDS);
+
+  message = Random.getString(RANDOM_STRING_LENGTH);
+  const firstValue: string = Random.getString(RANDOM_STRING_LENGTH);
+  const secondValue: string = Random.getString(RANDOM_STRING_LENGTH);
+  const data: object = {
+    first: firstValue,
+    second: secondValue
+  };
+  timestamp = Date.now();
+  methodToTest(message, data);
+  loggingEvent = logService.lastLoggingEvent;
+  expect(loggingEvent).toBeDefined();
+  expect(loggingEvent?.level).toBe(level);
+  expect(loggingEvent?.loggerName).toBe(logger.name);
+  expect(loggingEvent?.message).toContain(message);
+  expect(loggingEvent?.message).toContain(`"first": ${JSON.stringify(firstValue)}`);
+  expect(loggingEvent?.message).toContain(`"second": ${JSON.stringify(secondValue)}`);
+  expect(loggingEvent?.error).toBeUndefined();
   expect(Math.abs((loggingEvent?.timestamp ?? 0) - timestamp)).toBeLessThan(TEN_MILLISECONDS);
 }
