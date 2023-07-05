@@ -319,12 +319,6 @@ describe('Base Appender', () => {
       const appender: MockAppender = new MockAppender();
       appender.initialize(config);
 
-      /* This is currently set to zero in karma-test-shim.js, so we'll need to reset it here if we're to
-         see anything in the stack trace.
-      */
-      const previousLimit: number = Error.stackTraceLimit;
-      Error.stackTraceLimit = Infinity;
-
       try {
         throw new TypeError(Random.getString(RANDOM_MESSAGE_LENGTH));
       } catch (ex) {
@@ -340,8 +334,6 @@ describe('Base Appender', () => {
                                                                         : new RegExp(/appender\.spec\.(ts|js)/);
         expect(appender.renderLoggingEvent(loggingEvent)).toMatch(pattern);
       }
-
-      Error.stackTraceLimit = previousLimit;
     });
 
     it('should ignore error if not specified in logFormat', () => {
