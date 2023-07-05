@@ -25,6 +25,7 @@ For more information about using and configuring log4ngx, see <https://secondbou
 ## TODO
 
 * Make sure all classes, interfaces and their public/protected methods are documented
+* Make member vars readonly if possible/sensible
 
 ### Docs
 
@@ -37,6 +38,19 @@ For more information about using and configuring log4ngx, see <https://secondbou
   * Writing a custom level
 * API
   * Classes
+    * Appender
+    * ConsoleAppender
+    * ConsoleService
+    * Level
+    * Logger
+    * LogService
   * Interfaces
+    * AppenderConfig
+    * ConsoleAppenderConfig
+    * LogServiceConfig
   * Constants
+    * AppenderPlaceholders
+    * CONSOLE_APPENDER_TOKEN
+    * LOG_SERVICE_CONFIG_TOKEN
   * Utility
+    * 

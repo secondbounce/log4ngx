@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Getting Started</title>
+	<base href="/">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- <link rel="icon" type="image/x-icon" href="favicon.ico"> -->
+	<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+	<ul>
+	
+		<li><a href="/guide/installing/"></a></li>
+	
+		<li><a href="/guide/configuring/"></a></li>
+	
+		<li><a href="/guide/usage/"></a></li>
+	
+		<li><a href="/guide/customising/"></a></li>
+	
+		<li><a href="/guide/custom-levels/"></a></li>
+	
+		<li><a href="/guide/custom-appenders/"></a></li>
+	
+	</ul>
+	<h2>Installing</h2>
+<pre><code class="language-sh">npm install log4ngx --save
+</code></pre>
+<h4>Load the module for your app:</h4>
+<pre><code class="language-typescript">import { ConsoleAppender, CONSOLE_APPENDER_TOKEN, LOG_SERVICE_CONFIG_TOKEN, Log4ngxModule } from 'log4ngx';
+
+
+@NgModule({
+  ...
+  imports: [
+    ...
+    Log4ngxModule
+  ],
+  providers: [
+    { provide: CONSOLE_APPENDER_TOKEN, useClass: ConsoleAppender },
+    { provide: LOG_SERVICE_CONFIG_TOKEN, useValue: environment.logging }
+  ]
+})
+</code></pre>
+
+</body>
+</html>

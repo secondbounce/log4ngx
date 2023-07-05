@@ -1,0 +1,8 @@
+README.md
+
+# We'll ignore anything placed inside/underneath a folder called '.unused'
+# We'll also ignore files with '.unused' anywhere in the file extensions
+**/.unused/
+**/unused/
+**/*.unused
+**/*.unused.*
