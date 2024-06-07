@@ -1,7 +1,7 @@
 import { inject, TestBed } from '@angular/core/testing';
 
 import { Level } from './level';
-import { LogServiceConfig, LOG_SERVICE_CONFIG_TOKEN } from './log-service-config';
+import { LOG_SERVICE_CONFIG_TOKEN, LogServiceConfig } from './log-service-config';
 import { LogService } from './log.service';
 import { Logger } from './logger';
 import { LoggingEvent } from './logging-event';

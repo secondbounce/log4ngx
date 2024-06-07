@@ -1,6 +1,6 @@
 import { Inject, Injectable, Injector } from '@angular/core';
 
-import { LogServiceConfig, LOG_SERVICE_CONFIG_TOKEN } from './log-service-config';
+import { LOG_SERVICE_CONFIG_TOKEN, LogServiceConfig } from './log-service-config';
 import { LogService } from './log.service';
 import { LoggingEvent } from './logging-event';
 

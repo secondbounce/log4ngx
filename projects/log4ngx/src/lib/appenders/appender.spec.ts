@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { AppenderPlaceholders } from './appender';
 import { AppenderConfig } from './appender-config';
-import { MockAppender, MOCK_APPENDER_TOKEN } from './mock-appender';
+import { MOCK_APPENDER_TOKEN, MockAppender } from './mock-appender';
 import { Level } from '../level';
 import { LoggingEvent } from '../logging-event';
 import { Random } from '../utility';

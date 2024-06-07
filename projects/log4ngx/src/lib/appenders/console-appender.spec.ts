@@ -2,7 +2,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { AppenderPlaceholders } from './appender';
-import { ConsoleAppender, CONSOLE_APPENDER_TOKEN } from './console-appender';
+import { CONSOLE_APPENDER_TOKEN, ConsoleAppender } from './console-appender';
 import { ConsoleAppenderConfig } from './console-appender-config';
 import { ConsoleService } from '../console.service';
 import { Level, LevelValue } from '../level';

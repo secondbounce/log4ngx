@@ -38,13 +38,13 @@ export class Level {
 
   public static add(value: number, name: string, displayName: string): Level {
     if (value === undefined || value === null) {
-      console.error(`LOG4NGX: A numeric value must be specified for 'value'`);
-      throw new Error(`LOG4NGX: A numeric value must be specified for 'value'`);
+      console.error('LOG4NGX: A numeric value must be specified for \'value\'');
+      throw new Error('LOG4NGX: A numeric value must be specified for \'value\'');
     }
 
     if (name === undefined || name === null || name.length === 0) {
-      console.error(`LOG4NGX: A non-null, non-empty string value must be specified for 'name'`);
-      throw new Error(`LOG4NGX: A non-null, non-empty string value must be specified for 'name'`);
+      console.error('LOG4NGX: A non-null, non-empty string value must be specified for \'name\'');
+      throw new Error('LOG4NGX: A non-null, non-empty string value must be specified for \'name\'');
     }
 
     const key: string = name.toLowerCase();
@@ -85,8 +85,8 @@ export class Level {
 
   private static ensureDisplayNameValid(displayName: string): void {
     if (displayName === undefined || displayName === null) {
-      console.error(`LOG4NGX: A string value must be specified for 'displayName'`);
-      throw new Error(`LOG4NGX: A string value must be specified for 'displayName'`);
+      console.error('LOG4NGX: A string value must be specified for \'displayName\'');
+      throw new Error('LOG4NGX: A string value must be specified for \'displayName\'');
     }
   }
 }

@@ -2,7 +2,7 @@ import { Inject, Injectable, Injector } from '@angular/core';
 
 import { Appender } from './appenders';
 import { Level } from './level';
-import { LogServiceConfig, LOG_SERVICE_CONFIG_TOKEN } from './log-service-config';
+import { LOG_SERVICE_CONFIG_TOKEN, LogServiceConfig } from './log-service-config';
 import { Logger } from './logger';
 import { LoggerConfig } from './logger-config';
 import { LoggingEvent } from './logging-event';
