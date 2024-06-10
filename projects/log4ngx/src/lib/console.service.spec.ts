@@ -1,5 +1,4 @@
 /* eslint-disable no-console -- duh! */
-/* eslint-disable @typescript-eslint/no-explicit-any -- `any` is specified by the console methods so just keeping it consistent */
 import { inject, TestBed } from '@angular/core/testing';
 
 import { ConsoleService } from './console.service';

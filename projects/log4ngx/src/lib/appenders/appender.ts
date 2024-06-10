@@ -123,7 +123,7 @@ export abstract class Appender {
   private getSafeMessage(message: string): string {
     if (message === null) {
       message = '<null>';
-    } else if (typeof message === 'undefined') {
+    } else if (message === undefined) {
       message = '<undefined>';
     }
 

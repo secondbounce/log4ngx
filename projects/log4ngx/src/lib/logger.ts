@@ -102,7 +102,7 @@ export class Logger {
         error = errorOrData;
       } else {
         if (errorOrData !== undefined) {
-          message += '\n' + JSON.stringify(errorOrData, null, JSON_INDENT_IN_SPACES);
+          message += '\n' + JSON.stringify(errorOrData, undefined, JSON_INDENT_IN_SPACES);
         }
 
         error = undefined;

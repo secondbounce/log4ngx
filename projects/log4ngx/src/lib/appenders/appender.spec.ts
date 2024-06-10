@@ -94,7 +94,7 @@ describe('Base Appender', () => {
         Level.fatal
       ];
 
-      levels.forEach(level => {
+      levels.forEach((level) => {
         level.displayName = `##${level.displayName}##`;
         loggingEvent.level = level;
         expect(appender.renderLoggingEvent(loggingEvent)).toBe(level.displayName);
@@ -139,6 +139,7 @@ describe('Base Appender', () => {
       loggingEvent.message = message;
       expect(appender.renderLoggingEvent(loggingEvent)).toBe('<undefined>');
 
+      // eslint-disable-next-line unicorn/no-null -- we're specifically testing for null
       message = null;
       loggingEvent.message = message;
       expect(appender.renderLoggingEvent(loggingEvent)).toBe('<null>');
@@ -299,6 +300,7 @@ describe('Base Appender', () => {
         expect(appender.renderLoggingEvent(loggingEvent)).toBe('');   /* Chrome converts 'undefined' messages to an empty string */
       }
 
+      // eslint-disable-next-line unicorn/no-null -- we're specifically testing for null
       errorMessage = null;
       try {
         throw new TypeError(errorMessage);
@@ -439,7 +441,7 @@ function getLoggingEvent(errorOrMessage?: Error | string | undefined,
     // altError = 'error';
     // altMessage = messageOrLoggerName !== undefined ? 'message' : '-------';
     // altLogger = loggerName !== undefined ? 'logger' : '------';
-  } else if (typeof(errorOrMessage) === 'string') {
+  } else if (typeof errorOrMessage === 'string') {
     message = errorOrMessage;
     loggerName = messageOrLoggerName;
     // altMessage = 'message';

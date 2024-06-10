@@ -9,9 +9,9 @@ import { LoggingEvent } from './logging-event';
 
 @Injectable()
 export class LogService {
-  private _loggers: Map<string, Logger> = new Map();
-  private _appenders: Map<string, Appender> = new Map();
-  private _loggerConfigs: Map<string, LoggerConfig> = new Map();
+  private _loggers: Map<string, Logger> = new Map<string, Logger>();
+  private _appenders: Map<string, Appender> = new Map<string, Appender>();
+  private _loggerConfigs: Map<string, LoggerConfig> = new Map<string, LoggerConfig>();
 
   constructor(injector: Injector,
               @Inject(LOG_SERVICE_CONFIG_TOKEN) config: LogServiceConfig) {
@@ -32,7 +32,7 @@ export class LogService {
   public getLogger(nameOrObject: string | object): Logger {
     let name: string;
 
-    if (typeof(nameOrObject) === 'object') {
+    if (typeof nameOrObject === 'object') {
       name = nameOrObject.constructor.name;
     } else {
       name = nameOrObject;
