@@ -1,5 +1,5 @@
 {
-  "name": "log4ngx-library",
+  "name": "log4ngx",
   "version": "18.0.0",
   "description": "A Typescript logging framework for Angular projects",
   "author": "David Geary <david@secondbounce.com>",

@@ -7,7 +7,9 @@ import { Logger } from './logger';
 import { LoggerConfig } from './logger-config';
 import { LoggingEvent } from './logging-event';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LogService {
   private _loggers: Map<string, Logger> = new Map<string, Logger>();
   private _appenders: Map<string, Appender> = new Map<string, Appender>();

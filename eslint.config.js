@@ -16,8 +16,8 @@ module.exports = tseslint.config(
     languageOptions: {
       parserOptions: {
         projectService: true
-      },
-    },
+      }
+    }
   },
   {
     files: ['**/*.ts'],
