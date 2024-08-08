@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { AppenderPlaceholders } from './appender';
 import { AppenderConfig } from './appender-config';
-import { MockAppender, MOCK_APPENDER_TOKEN } from './mock-appender';
+import { MOCK_APPENDER_TOKEN, MockAppender } from './mock-appender';
 import { Level } from '../level';
 import { LoggingEvent } from '../logging-event';
 import { Random } from '../utility';
@@ -94,7 +94,7 @@ describe('Base Appender', () => {
         Level.fatal
       ];
 
-      levels.forEach(level => {
+      levels.forEach((level) => {
         level.displayName = `##${level.displayName}##`;
         loggingEvent.level = level;
         expect(appender.renderLoggingEvent(loggingEvent)).toBe(level.displayName);
@@ -139,6 +139,7 @@ describe('Base Appender', () => {
       loggingEvent.message = message;
       expect(appender.renderLoggingEvent(loggingEvent)).toBe('<undefined>');
 
+      // eslint-disable-next-line unicorn/no-null -- we're specifically testing for null
       message = null;
       loggingEvent.message = message;
       expect(appender.renderLoggingEvent(loggingEvent)).toBe('<null>');
@@ -299,6 +300,7 @@ describe('Base Appender', () => {
         expect(appender.renderLoggingEvent(loggingEvent)).toBe('');   /* Chrome converts 'undefined' messages to an empty string */
       }
 
+      // eslint-disable-next-line unicorn/no-null -- we're specifically testing for null
       errorMessage = null;
       try {
         throw new TypeError(errorMessage);
@@ -319,12 +321,6 @@ describe('Base Appender', () => {
       const appender: MockAppender = new MockAppender();
       appender.initialize(config);
 
-      /* This is currently set to zero in karma-test-shim.js, so we'll need to reset it here if we're to
-         see anything in the stack trace.
-      */
-      const previousLimit: number = Error.stackTraceLimit;
-      Error.stackTraceLimit = Infinity;
-
       try {
         throw new TypeError(Random.getString(RANDOM_MESSAGE_LENGTH));
       } catch (ex) {
@@ -340,8 +336,6 @@ describe('Base Appender', () => {
                                                                         : new RegExp(/appender\.spec\.(ts|js)/);
         expect(appender.renderLoggingEvent(loggingEvent)).toMatch(pattern);
       }
-
-      Error.stackTraceLimit = previousLimit;
     });
 
     it('should ignore error if not specified in logFormat', () => {
@@ -447,7 +441,7 @@ function getLoggingEvent(errorOrMessage?: Error | string | undefined,
     // altError = 'error';
     // altMessage = messageOrLoggerName !== undefined ? 'message' : '-------';
     // altLogger = loggerName !== undefined ? 'logger' : '------';
-  } else if (typeof(errorOrMessage) === 'string') {
+  } else if (typeof errorOrMessage === 'string') {
     message = errorOrMessage;
     loggerName = messageOrLoggerName;
     // altMessage = 'message';

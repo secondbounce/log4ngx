@@ -2,16 +2,18 @@ import { Inject, Injectable, Injector } from '@angular/core';
 
 import { Appender } from './appenders';
 import { Level } from './level';
-import { LogServiceConfig, LOG_SERVICE_CONFIG_TOKEN } from './log-service-config';
+import { LOG_SERVICE_CONFIG_TOKEN, LogServiceConfig } from './log-service-config';
 import { Logger } from './logger';
 import { LoggerConfig } from './logger-config';
 import { LoggingEvent } from './logging-event';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LogService {
-  private _loggers: Map<string, Logger> = new Map();
-  private _appenders: Map<string, Appender> = new Map();
-  private _loggerConfigs: Map<string, LoggerConfig> = new Map();
+  private _loggers: Map<string, Logger> = new Map<string, Logger>();
+  private _appenders: Map<string, Appender> = new Map<string, Appender>();
+  private _loggerConfigs: Map<string, LoggerConfig> = new Map<string, LoggerConfig>();
 
   constructor(injector: Injector,
               @Inject(LOG_SERVICE_CONFIG_TOKEN) config: LogServiceConfig) {
@@ -32,7 +34,7 @@ export class LogService {
   public getLogger(nameOrObject: string | object): Logger {
     let name: string;
 
-    if (typeof(nameOrObject) === 'object') {
+    if (typeof nameOrObject === 'object') {
       name = nameOrObject.constructor.name;
     } else {
       name = nameOrObject;

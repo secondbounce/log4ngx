@@ -1,9 +1,9 @@
 import { Injector } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
 
-import { AppenderPlaceholders, MockAppender, MockatooAppender, MOCKATOO_APPENDER_TOKEN, MOCK_APPENDER_TOKEN } from './appenders';
+import { AppenderPlaceholders, MOCK_APPENDER_TOKEN, MockAppender, MOCKATOO_APPENDER_TOKEN, MockatooAppender } from './appenders';
 import { Level, LevelValue } from './level';
-import { LogServiceConfig, LOG_SERVICE_CONFIG_TOKEN } from './log-service-config';
+import { LOG_SERVICE_CONFIG_TOKEN, LogServiceConfig } from './log-service-config';
 import { LogService } from './log.service';
 import { Logger } from './logger';
 import { Random } from './utility';

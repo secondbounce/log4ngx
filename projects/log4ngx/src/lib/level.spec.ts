@@ -1,3 +1,4 @@
+/* eslint-disable @stylistic/max-statements-per-line -- it keeps some of the tests more readable */
 import { TestBed } from '@angular/core/testing';
 
 import { Level } from './level';
@@ -113,14 +114,15 @@ describe('Level', () => {
       const name: string = 'test-' + Math.random().toString();
       const displayName: string = 'test level';
 
-      expect(function() { Level.add(undefined, name, displayName) } ).toThrow();
+      expect(function () { Level.add(undefined, name, displayName) }).toThrow();
     });
 
     it('throws an error if a null value is specified', () => {
       const name: string = 'test-' + Math.random().toString();
       const displayName: string = 'test level';
 
-      expect(function() { Level.add(null, name, displayName) } ).toThrow();
+      // eslint-disable-next-line unicorn/no-null -- we're specifically testing for null
+      expect(function () { Level.add(null, name, displayName) }).toThrow();
     });
   });
 
@@ -131,7 +133,7 @@ describe('Level', () => {
       const newDebugValue: number = originalDebugLevel.value + 1;
       const newDebugDisplayName: string = '!!' + originalDebugLevel.displayName + '!!';
 
-      expect(function() { Level.add(newDebugValue, name, newDebugDisplayName) } ).toThrow();
+      expect(function () { Level.add(newDebugValue, name, newDebugDisplayName) }).toThrow();
       const savedDebugLevel: Level | undefined = Level.getLevel(name);
       expect(savedDebugLevel).toEqual(originalDebugLevel);
     });
@@ -141,7 +143,7 @@ describe('Level', () => {
       const name: string = '';
       const displayName: string = 'test level';
 
-      expect(function() { Level.add(value, name, displayName) } ).toThrow();
+      expect(function () { Level.add(value, name, displayName) }).toThrow();
     });
 
     it('throws an error if an undefined value is specified', () => {
@@ -149,15 +151,16 @@ describe('Level', () => {
       const name: string = undefined;
       const displayName: string = 'test level';
 
-      expect(function() { Level.add(value, name, displayName) } ).toThrow();
+      expect(function () { Level.add(value, name, displayName) }).toThrow();
     });
 
     it('throws an error if a null value is specified', () => {
       const value: number = 1000;
+      // eslint-disable-next-line unicorn/no-null -- we're specifically testing for null
       const name: string = null;
       const displayName: string = 'test level';
 
-      expect(function() { Level.add(value, name, displayName) } ).toThrow();
+      expect(function () { Level.add(value, name, displayName) }).toThrow();
     });
   });
 
@@ -189,15 +192,16 @@ describe('Level', () => {
       const name: string = 'test-' + Math.random().toString();  /* Ensure it's unique, otherwise 'wrong' error may be thrown */
       const displayName: string = undefined;
 
-      expect(function() { Level.add(value, name, displayName) } ).toThrow();
+      expect(function () { Level.add(value, name, displayName) }).toThrow();
     });
 
     it('throws an error if a null value is specified', () => {
       const value: number = 1000;
       const name: string = 'test-' + Math.random().toString();  /* Ensure it's unique, otherwise 'wrong' error may be thrown */
+      // eslint-disable-next-line unicorn/no-null -- we're specifically testing for null
       const displayName: string = null;
 
-      expect(function() { Level.add(value, name, displayName) } ).toThrow();
+      expect(function () { Level.add(value, name, displayName) }).toThrow();
     });
 
     it('is possible to change', () => {

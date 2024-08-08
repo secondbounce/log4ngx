@@ -53,6 +53,8 @@ export abstract class Appender {
   private _logFormat: string = '';
   private _errorFormat: string = '';
 
+  protected abstract appendEvent(loggingEvent: LoggingEvent): void;
+
   public initialize(config: AppenderConfig): void {
     this._name = config.name;
     this._logFormat = config.logFormat;
@@ -76,8 +78,6 @@ export abstract class Appender {
   public append(loggingEvent: LoggingEvent): void {
     this.appendEvent(loggingEvent);
   }
-
-  protected abstract appendEvent(loggingEvent: LoggingEvent): void;
 
   protected renderLoggingEvent(loggingEvent: LoggingEvent): string {
     let logMessage: string = this._logFormat;
@@ -123,7 +123,7 @@ export abstract class Appender {
   private getSafeMessage(message: string): string {
     if (message === null) {
       message = '<null>';
-    } else if (typeof message === 'undefined') {
+    } else if (message === undefined) {
       message = '<undefined>';
     }
 

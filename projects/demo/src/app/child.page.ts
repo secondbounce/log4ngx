@@ -1,9 +1,15 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Logger, LogService } from 'log4ngx';
 
 @Component({
   selector: 'app-child',
-  templateUrl: './child.page.html'
+  templateUrl: './child.page.html',
+  changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [
+    RouterLink
+  ]
 })
 export class ChildPage implements OnInit, AfterViewInit {
   private readonly _log: Logger;

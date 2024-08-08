@@ -1,9 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { Logger, LogService } from 'log4ngx';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [
+    RouterOutlet
+  ]
 })
 export class AppComponent implements OnInit {
   public title: string = 'Log4ngx Demo';
