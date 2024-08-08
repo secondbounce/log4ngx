@@ -9,6 +9,7 @@ const eslintPluginUnicorn = require('eslint-plugin-unicorn');
 // TODO: this seems to be CommonJS, not ESM (see https://github.com/sindresorhus/eslint-plugin-unicorn/tree/main)
 // TODO: see https://github.com/sindresorhus/eslint-plugin-unicorn/issues/2324
 // TODO: do we still want prefer-arrow plugin??
+// TODO: remove tsconfig.eslint.json when implemented in each project
 // TODO: work out why `ignores` for '.unused' isn't working
 
 module.exports = tseslint.config(
@@ -21,12 +22,11 @@ module.exports = tseslint.config(
   },
   {
     files: ['**/*.ts'],
-    // ignores: [
-    //   'node_modules/',     // don't ever lint node_modules
-    //   'dist/',             // don't lint build output
-    //   '**/.unused/',          // WRONG? FYI, dot-files and dot-folders are ignored by default
-    //   '**/*.unused.ts'
-    // ],
+    ignores: [
+// TODO: why doesn't this work?
+      '**/.unused/',
+      '**/*.unused.ts'
+    ],
     extends: [
       eslint.configs.recommended,         // https://github.com/eslint/eslint/blob/main/packages/js/src/configs/eslint-recommended.js
       stylistic.configs['recommended-flat'],
@@ -386,6 +386,12 @@ module.exports = tseslint.config(
         }
       ],
       'no-underscore-dangle': 'off',
+      '@typescript-eslint/no-unused-expressions': [
+        'warn',
+        {
+          "allowTernary": true
+        }
+      ],
       '@typescript-eslint/no-unused-vars': [  /* Overrides the 'recommended' setting */
         'warn',
         {
