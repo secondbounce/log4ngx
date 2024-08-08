@@ -14,4 +14,8 @@ export class Random {
 
     return value;
   }
+
+  public static getInteger(max: number, min: number): number {
+    return (Math.random() * (max - min)) + min;
+  }
 }
