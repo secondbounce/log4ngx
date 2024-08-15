@@ -9,6 +9,9 @@ env:
   PREFIX_REGEX: 'build#(.*)'
   IS_PRERELEASE: ${{ !startsWith(github.ref, 'refs/tags/build#') || contains(github.ref, '-') }}
 
+permissions:
+  contents: read
+
 jobs:
   create-release:
     runs-on: ubuntu-latest
@@ -18,11 +21,16 @@ jobs:
       contents: write
 
     steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@5c7944e73c4c2a096b17a9cb74d65b6c2bbafbde # v2.9.1
+        with:
+          egress-policy: audit
+
       - name: Check out source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
       - name: Set up node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
         with:
           node-version: 20
           cache: 'npm'
@@ -32,7 +40,7 @@ jobs:
 
       - name: Get current tag
         id: get-tag
-        uses: devops-actions/action-get-tag@v1.0.3
+        uses: devops-actions/action-get-tag@19f393df16cb09284484fb49bf678004bf50896a # v1.0.3
         with:
           strip_v: false
 
@@ -51,18 +59,18 @@ jobs:
           echo "version=$rctag" >> "$GITHUB_OUTPUT"
 
       - name: Update package version to ${{ steps.get-version.outputs.version }}
-        uses: BellCubeDev/update-package-version-by-release-tag@v2
+        uses: BellCubeDev/update-package-version-by-release-tag@1f8aff46e596cd4f81166e8e437e5a117cab20bc # v2
         with:
           version: ${{ steps.get-version.outputs.version }}
 
       - name: Update library package version to ${{ steps.get-version.outputs.version }}
-        uses: BellCubeDev/update-package-version-by-release-tag@v2
+        uses: BellCubeDev/update-package-version-by-release-tag@1f8aff46e596cd4f81166e8e437e5a117cab20bc # v2
         with:
           version: ${{ steps.get-version.outputs.version }}
           package-json-path: './projects/log4ngx/package.json'
 
       - name: Commit updated package
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@8621497c8c39c72f3e2a999a26b4ca1b5058a842 # v5.0.1
         with:
           commit_message: NPM package version updated to ${{ steps.get-version.outputs.version }}
           branch: main
@@ -82,7 +90,7 @@ jobs:
 
       - name: Create draft Github pre-release for ${{ steps.get-version.outputs.version }} (${{ env.IS_PRERELEASE }})
         if: env.IS_PRERELEASE == 'true'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191 # v2.0.8
         with:
           name: ${{ steps.get-version.outputs.version }}
           tag_name: ${{ steps.get-version.outputs.version }}
@@ -91,7 +99,7 @@ jobs:
 
       - name: Create draft Github release for ${{ steps.get-version.outputs.version }} (!${{ env.IS_PRERELEASE }})
         if: env.IS_PRERELEASE == 'false'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191 # v2.0.8
         with:
           name: ${{ steps.get-version.outputs.version }}
           tag_name: ${{ steps.get-version.outputs.version }}
