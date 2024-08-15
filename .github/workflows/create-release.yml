@@ -1,0 +1,99 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'build#*.*.*'
+
+env:
+  PREFIX_REGEX: 'build#(.*)'
+  IS_PRERELEASE: ${{ !startsWith(github.ref, 'refs/tags/build#') || contains(github.ref, '-') }}
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
+      contents: write
+
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v4
+
+      - name: Set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get current tag
+        id: get-tag
+        uses: devops-actions/action-get-tag@v1.0.3
+        with:
+          strip_v: false
+
+      - name: Get the new version
+        # Remove the prefix
+        id: get-version
+        run: |
+          rctag=${{ steps.get-tag.outputs.tag }}
+          re='${{ env.PREFIX_REGEX }}'
+          if [[ $rctag =~ $re ]]; then
+            echo "::debug::Tag matches regex pattern"
+            rctag=${BASH_REMATCH[1]}
+          else
+            echo "::debug::Tag DOES NOT match regex pattern"
+          fi
+          echo "version=$rctag" >> "$GITHUB_OUTPUT"
+
+      - name: Update package version to ${{ steps.get-version.outputs.version }}
+        uses: BellCubeDev/update-package-version-by-release-tag@v2
+        with:
+          version: ${{ steps.get-version.outputs.version }}
+
+      - name: Update library package version to ${{ steps.get-version.outputs.version }}
+        uses: BellCubeDev/update-package-version-by-release-tag@v2
+        with:
+          version: ${{ steps.get-version.outputs.version }}
+          package-json-path: './projects/log4ngx/package.json'
+
+      - name: Commit updated package
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: NPM package version updated to ${{ steps.get-version.outputs.version }}
+          branch: main
+          commit_user_name: ${{ github.actor }}
+          commit_user_email: ${{ github.actor }}@users.noreply.github.com
+
+      - name: Update git tag on latest commit
+        # The deletes the original prefixed tag on the remote (origin) repo but
+        # obviously doesn't remove it from any local repos that created/pulled
+        # the tag beforehand.  That shouldn't be an issue though, as we're only
+        # tidying it up because it's redundant.
+        run: |
+          git tag -d ${{ steps.get-tag.outputs.tag }}
+          git push origin :refs/tags/${{ steps.get-tag.outputs.tag }}
+          git tag v${{ steps.get-version.outputs.version }}
+          git push origin --tags
+
+      - name: Create draft Github pre-release for ${{ steps.get-version.outputs.version }} (${{ env.IS_PRERELEASE }})
+        if: env.IS_PRERELEASE == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ steps.get-version.outputs.version }}
+          tag_name: ${{ steps.get-version.outputs.version }}
+          prerelease: true
+          draft: true
+
+      - name: Create draft Github release for ${{ steps.get-version.outputs.version }} (!${{ env.IS_PRERELEASE }})
+        if: env.IS_PRERELEASE == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ steps.get-version.outputs.version }}
+          tag_name: ${{ steps.get-version.outputs.version }}
+          prerelease: false
+          draft: true
