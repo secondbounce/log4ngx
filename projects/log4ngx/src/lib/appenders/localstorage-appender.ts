@@ -60,7 +60,7 @@ export class LocalStorageAppender extends Appender {
       this.getCurrentLogEntries(this._localStorage);    /* Really just to initialize _currentKey and _currentLogEntries */
     } else {
       // eslint-disable-next-line no-console -- there's not much else we can do
-      console.error('LocalStorage is not available; calls to log via LocalStorageAppender will be ignored');
+      console.error('LOG4NGX: LocalStorage is not available; calls to log via LocalStorageAppender will be ignored');
     }
   }
 
@@ -89,11 +89,11 @@ export class LocalStorageAppender extends Appender {
             /* Remove all but the current day's logs */
             retry = this.removeOldLogKeys(1);
             // eslint-disable-next-line no-console -- nowhere else we can note this
-            console.warn(retry ? 'LocalStorage quota has been exceeded; old logs removed so will retry logging'
-                               : `LocalStorage quota has been exceeded (${error})`);
+            console.warn(retry ? 'LOG4NGX: LocalStorage quota has been exceeded; old logs removed so will retry logging'
+                               : `LOG4NGX: LocalStorage quota has been exceeded (${error})`);
           } else {
             // eslint-disable-next-line no-console -- nowhere else we can note this
-            console.warn(`Error occurred logging entry to (${error})`);
+            console.warn(`LOG4NGX: Error occurred logging entry to (${error})`);
           }
         }
       } while (retry);
@@ -154,7 +154,7 @@ export class LocalStorageAppender extends Appender {
 
     if (handled) {
       // eslint-disable-next-line no-console -- nowhere else we can note this
-      console.info('Log entries purged from LocalStorage');
+      console.info('LOG4NGX: Log entries purged from LocalStorage');
     }
 
     return handled;

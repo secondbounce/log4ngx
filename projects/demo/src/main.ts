@@ -5,4 +5,4 @@ import { AppComponent } from './app/app.component';
 
 bootstrapApplication(AppComponent, appConfig)
     // eslint-disable-next-line unicorn/prefer-top-level-await, no-console -- it's a pretty fatal error
-    .catch(error => console.error(error));
+    .catch(error => console.error('LOG4NGX:', error));
