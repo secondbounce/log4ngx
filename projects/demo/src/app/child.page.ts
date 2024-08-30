@@ -19,10 +19,10 @@ export class ChildPage implements OnInit, AfterViewInit {
   }
 
   public ngOnInit(): void {
-    this._log.info('OnInit lifecycle event triggered');
+    this._log.info('OnInit lifecycle event triggered in the child page');
   }
 
   public ngAfterViewInit(): void {
-    this._log.warn('AfterViewInit lifecycle event triggered (not really a warning but just shows the different levels :-))');
+    this._log.warn('AfterViewInit lifecycle event triggered in the child page(not really a warning but just shows the different levels :-))');
   }
 }

@@ -8,7 +8,7 @@ export const environment: Environment = {
     loggers: [
       {
         loggerName: '',
-        level: 'warn',
+        level: 'debug',   /* Normally higher in prod, but we want to show all messages for demo */
         appenderNames: [
           'console',
           'localstorage'
