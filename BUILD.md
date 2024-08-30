@@ -20,12 +20,14 @@ descriptor, e.g.
 > The release **must** be published manually from within Github as it is created as a _draft_,
 allowing the release notes to be added, prior to publishing.
 
-In creating the release, the "build#" prefix will be removed from the tag and the value used as the
-version number. The workflow will update the `version` properties in the repo's _package.json_ files
-for both the top-level project and the library, and then these updated files will be committed back
-to the repo.  Because the original 'build#' tag is no longer on the commit that represents the
-release, that tag will be deleted (the new release will automatically create a tag matching the
-version number on the new commit to correctly identify it as the source of the release).
+In creating the release, the "build#" prefix will be removed from the tag and the remaining value
+used as the version number. The workflow will update the `version` properties in the repo's
+_package.json_ files for both the top-level project and the library, and then these updated files
+will be committed back to the repo prior to the draft release being created.  
+
+Because the original 'build#' tag is no longer on the commit that represents the release, that tag
+will be deleted (and the new release will automatically create a tag matching the version number on
+the new commit to correctly identify it as the source of the release).
 
 > This does mean that the release author (and anyone pulling the `main` branch after the build tag
 has been added but before the release has been created) will end up with a redundant tag in their

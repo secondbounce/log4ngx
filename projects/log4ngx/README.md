@@ -21,22 +21,3 @@ The `LogService` is the factory with which you instantiate `Loggers` in each of 
 The `LogService` is configured using an instance of the `LogServiceConfig`, typically created in your application's main module.  The configuration defines the parameters used with each `Appender` and how each `Appender` relates to the various `Loggers`.
 
 For more information about using and configuring log4ngx, see <https://secondbounce.github.io/log4ngx/>.
-
-## TODO
-
-* Make sure all classes, interfaces and their public/protected methods are documented
-
-### Docs
-
-* Getting Started
-  * installing
-  * configuring
-  * usage
-* Customising
-  * Writing a custom appender
-  * Writing a custom level
-* API
-  * Classes
-  * Interfaces
-  * Constants
-  * Utility
