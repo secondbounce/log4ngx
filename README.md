@@ -1,6 +1,7 @@
 # README
 
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/secondbounce/log4ngx/badge)](https://scorecard.dev/viewer/?uri=github.com/secondbounce/log4ngx)
+![Documentation](docs/coverage.svg)
 
 log4ngx is a Typescript logging framework for Angular projects, based on concepts used in Log4j,
 Log4net, etc.

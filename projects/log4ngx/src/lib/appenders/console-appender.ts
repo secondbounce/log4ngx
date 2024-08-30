@@ -6,6 +6,7 @@ import { ConsoleService } from '../console.service';
 import { Level } from '../level';
 import { LoggingEvent } from '../logging-event';
 
+/** The [InjectionToken](https://angular.dev/api/core/InjectionToken) to be used when referencing the {@link ConsoleAppender} for DI. */
 export const CONSOLE_APPENDER_TOKEN: InjectionToken<Appender> = new InjectionToken<Appender>('ConsoleAppender');
 
 @Injectable()

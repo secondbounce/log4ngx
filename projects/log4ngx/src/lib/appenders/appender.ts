@@ -1,13 +1,14 @@
 import { AppenderConfig } from './appender-config';
 import { LoggingEvent } from '../logging-event';
 
-/** Placeholder constants for use in the `AppenderConfig.logFormat` and/or
- * `AppenderConfig.errorFormat` properties.
+/**
+ * Placeholder constants for use in the {@link AppenderConfig.logFormat} and/or
+ * {@link AppenderConfig.errorFormat} properties.
  */
 export /*not const*/ enum AppenderPlaceholders {
-  /** The `Level.displayName` property. */
+  /** The {@link Level.displayName} property. */
   Level = '{level}',
-  /** The `Logger.name` property. */
+  /** The {@link Logger.name} property. */
   Logger = '{logger}',
   /** The log message. */
   Message = '{message}',
@@ -25,21 +26,24 @@ export /*not const*/ enum AppenderPlaceholders {
   Time = '{time}',
   /** The log timestamp converted to UTC format, e.g. 'Mon, 07 Aug 2017 14:53:34 GMT'. */
   UtcDate = '{date-utc}',
-  /** The logged error (if any), formatted according to `AppenderConfig.errorFormat`. */
+  /** The logged error (if any), formatted according to {@link AppenderConfig.errorFormat}. */
   Error = '{error}',
-  /** The logged Error's `name` property.
+  /**
+   * The logged Error's `name` property.
    *
-   * Note that this placeholder is only valid within `AppenderConfig.errorFormat`.
+   * Note that this placeholder is only valid within {@link AppenderConfig.errorFormat}.
   */
   ErrorName = '{error-name}',
-  /** The logged Error's `message` property.
+  /**
+   * The logged Error's `message` property.
    *
-   * Note that this placeholder is only valid within `AppenderConfig.errorFormat`.
+   * Note that this placeholder is only valid within {@link AppenderConfig.errorFormat}.
   */
   ErrorMessage = '{error-message}',
-  /** The logged Error's `stack` property.
+  /**
+   * The logged Error's `stack` property.
    *
-   * Note that this placeholder is only valid within `AppenderConfig.errorFormat`.
+   * Note that this placeholder is only valid within {@link AppenderConfig.errorFormat}.
   */
   ErrorStack = '{error-stack}',
   /** Carriage return/line feed characters, i.e. '\r\n'. */

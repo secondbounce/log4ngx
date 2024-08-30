@@ -1,0 +1,22 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["projects/log4ngx/src/public-api.ts"],
+  "out": "docs",
+  "tsconfig": "projects/log4ngx/tsconfig.lib.prod.json",
+  "projectDocuments": [
+    "projects/log4ngx/docs/getting-started.md",
+    "projects/log4ngx/docs/configuring.md"
+  ],
+  "sortEntryPoints": false,
+  "logLevel": "Info",
+  "validation": {
+    "notExported": true,
+    "invalidLink": true,
+    "notDocumented": true
+  },
+  "plugin": [
+    "typedoc-plugin-coverage"
+  ],
+  "coverageLabel": "docs %",
+  "coverageOutputType": "all"
+}

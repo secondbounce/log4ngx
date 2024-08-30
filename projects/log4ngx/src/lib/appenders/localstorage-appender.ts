@@ -4,6 +4,7 @@ import { Appender } from './appender';
 import { LocalStorageAppenderConfig } from './localstorage-appender-config';
 import { LoggingEvent } from '../logging-event';
 
+/** The [InjectionToken](https://angular.dev/api/core/InjectionToken) to be used when referencing the {@link LocalStorageAppender} for DI. */
 export const LOCALSTORAGE_APPENDER_TOKEN: InjectionToken<Appender> = new InjectionToken<Appender>('LocalStorageAppender');
 // TODO: document that these are exported for testing so shouldn't be used directly
 export const DEFAULT_KEY_PREFIX: string = '#';
@@ -15,8 +16,19 @@ const NONFIREFOX_LEGACY_CODE_VALUE_QUOTA_EXCEEDED: number = 22;
 const FIREFOX_LEGACY_NAME_VALUE_QUOTA_EXCEEDED: string = 'NS_ERROR_DOM_QUOTA_REACHED';
 const NONFIREFOX_LEGACY_NAME_VALUE_QUOTA_EXCEEDED: string = 'QuotaExceededError';
 
-/** Class providing support for logging to [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
- * @extends Appender
+/**
+ * Class providing support for logging to [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
+ *
+ * Log entries for each day are concatenated into a single value, separated by the
+ * {@link logEntryDelimiter}, and stored under a key comprising of the {@link keyPrefix} and the
+ * numeric timestamp of the date.
+ *
+ * Note however that the key format may change, so should you need to access the logs programmatically,
+ * it is recommended that the {@link currentKey} property is used to identify the current day's logs.
+ * To access other days' logs, check for `localStorage` values whose key starts with {@link keyPrefix}.
+ *
+ * {@link maxDays} controls the maximum number of days for which log entries are retained.  Once this
+ * is reached, the oldest day's logs will be deleted.
  */
 @Injectable()
 export class LocalStorageAppender extends Appender {
@@ -31,6 +43,7 @@ export class LocalStorageAppender extends Appender {
   public get currentKey(): string { return this._currentKey }
   /** Gets the prefix used for the keys. */
   public get keyPrefix(): string { return this._keyPrefix }
+  /** Gets the delimiter used to separate each individual log entry within each date-specific value. */
   public get logEntryDelimiter(): string { return this._logEntryDelimiter }
   /** Gets the maximum number of days for which log entries will be held. */
   public get maxDays(): number { return this._maxDays }
