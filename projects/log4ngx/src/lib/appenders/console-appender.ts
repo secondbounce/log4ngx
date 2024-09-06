@@ -1,8 +1,8 @@
+/* eslint-disable no-console -- duh! */
 import { Injectable, InjectionToken } from '@angular/core';
 
 import { Appender } from './appender';
 import { ConsoleAppenderConfig } from './console-appender-config';
-import { ConsoleService } from '../console.service';
 import { Level } from '../level';
 import { LoggingEvent } from '../logging-event';
 
@@ -11,10 +11,6 @@ export const CONSOLE_APPENDER_TOKEN: InjectionToken<Appender> = new InjectionTok
 
 @Injectable()
 export class ConsoleAppender extends Appender {
-  constructor(private _consoleService: ConsoleService) {
-    super();
-  }
-
   public override initialize(config: ConsoleAppenderConfig): void {
     super.initialize(config);
   }
@@ -25,24 +21,24 @@ export class ConsoleAppender extends Appender {
 
     switch (true) {
       case loggingLevel >= Level.error.value:
-        this._consoleService.error(message);
+        console.error(message);
         break;
 
       case loggingLevel >= Level.warn.value:
-        this._consoleService.warn(message);
+        console.warn(message);
         break;
 
       case loggingLevel >= Level.info.value:
-        this._consoleService.info(message);
+        console.info(message);
         break;
 
       case loggingLevel >= Level.debug.value:
-        this._consoleService.debug(message);
+        console.debug(message);
         break;
 
       default:
         /* Shouldn't happen, but just in case... */
-        this._consoleService.trace(message);
+        console.trace(message);
         break;
     }
   }
