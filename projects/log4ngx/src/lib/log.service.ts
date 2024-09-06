@@ -1,4 +1,4 @@
-import { Inject, Injectable, Injector } from '@angular/core';
+import { EnvironmentInjector, Inject, inject, Injectable, runInInjectionContext } from '@angular/core';
 
 import { Appender } from './appenders';
 import { Level } from './level';
@@ -14,15 +14,30 @@ export class LogService {
   private _loggers: Map<string, Logger> = new Map<string, Logger>();
   private _appenders: Map<string, Appender> = new Map<string, Appender>();
   private _loggerConfigs: Map<string, LoggerConfig> = new Map<string, LoggerConfig>();
+  private _environmentInjector = inject(EnvironmentInjector);
 
-  constructor(injector: Injector,
-              @Inject(LOG_SERVICE_CONFIG_TOKEN) config: LogServiceConfig) {
-    for (const appenderConfig of config.appenders) {
-      const appender: Appender = injector.get(appenderConfig.providerToken);
-      appender.initialize(appenderConfig);
+  constructor(@Inject(LOG_SERVICE_CONFIG_TOKEN) config: LogServiceConfig) {
+    this.configure(config);
+  }
 
-      this._appenders.set(appender.name, appender);
-    }
+  public configure(config: LogServiceConfig): void {
+    this._appenders.clear();
+    this._loggerConfigs.clear();
+
+    /* For 'real world' use, a static configuration will be used that is set as the application is
+      bootstrapped.  But for the unit tests, we need different configuration, hence this is split
+      into its own function.  However, if we call `inject()` outside the constructor, it has to be
+      wrapped in a call to `runInInjectionContext()`, otherwise we'll get the dreaded
+      "NG0203: `inject()` must be called from an injection context" error.
+    */
+    runInInjectionContext(this._environmentInjector, () => {
+      for (const appenderConfig of config.appenders) {
+        const appender: Appender = inject(appenderConfig.providerToken);
+        appender.initialize(appenderConfig);
+
+        this._appenders.set(appenderConfig.name, appender);
+      }
+    });
 
     for (const loggerConfig of config.loggers) {
       this._loggerConfigs.set(loggerConfig.loggerName, loggerConfig);

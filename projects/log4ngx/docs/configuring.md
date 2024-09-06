@@ -28,7 +28,6 @@ const loggingConfig: LogServiceConfig = {
 const appConfig = {
   providers: [
     ...
-    importProvidersFrom(Log4ngxModule),
     { provide: CONSOLE_APPENDER_TOKEN, useClass: ConsoleAppender },
     { provide: LOG_SERVICE_CONFIG_TOKEN, useValue: loggingConfig }
   ]

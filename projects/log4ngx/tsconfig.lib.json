@@ -10,6 +10,9 @@
     "types": []
   },
   "exclude": [
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "src/**/.unused/*.ts",
+    "src/**/*.unused.ts",
+    "**/*.unused"
   ]
 }
