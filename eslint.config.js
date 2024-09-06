@@ -370,7 +370,7 @@ module.exports = tseslint.config(
         }
       ],
       '@stylistic/no-multi-spaces': 'off',    /* Overrides the 'recommended' setting */
-      'no-multiple-empty-lines': 'error',
+      '@stylistic/no-multiple-empty-lines': 'warn',
       'unicorn/no-negated-condition': 'off',  /* Overrides the 'recommended' setting, since fix can be less readable */
       'no-new-func': 'error',
       'no-restricted-syntax': [
@@ -385,6 +385,7 @@ module.exports = tseslint.config(
           'ignoreTypeValueShadow': true
         }
       ],
+      '@stylistic/no-trailing-spaces': 'warn',
       'no-underscore-dangle': 'off',
       '@typescript-eslint/no-unused-expressions': [
         'warn',
@@ -414,6 +415,7 @@ module.exports = tseslint.config(
           'onlyIfContainsSeparator': true
         }
       ],
+      '@stylistic/padded-blocks': 'warn',           /* Overrides the 'recommended' setting */
 // TODO: is this still useful?
       // 'prefer-arrow/prefer-arrow-functions': [
       //   'warn',
