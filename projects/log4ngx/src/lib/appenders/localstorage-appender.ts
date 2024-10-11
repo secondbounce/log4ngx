@@ -57,7 +57,7 @@ export class LocalStorageAppender extends Appender {
 
     this._localStorage = this.getLocalStorage();
     if (this._localStorage !== undefined) {
-      this.getCurrentLogEntries(this._localStorage);    /* Really just to initialize _currentKey and _currentLogEntries */
+      this.getCurrentLogEntries(this._localStorage, false);    /* Really just to initialize _currentKey and _currentLogEntries */
     } else {
       // eslint-disable-next-line no-console -- there's not much else we can do
       console.error('LOG4NGX: LocalStorage is not available; calls to log via LocalStorageAppender will be ignored');
@@ -68,7 +68,7 @@ export class LocalStorageAppender extends Appender {
     if (this._localStorage !== undefined) {
       const localStorage: Storage = this._localStorage;
       const message: string = this.renderLoggingEvent(loggingEvent);
-      let currentLogEntries: string = this.getCurrentLogEntries(localStorage);
+      let currentLogEntries: string = this.getCurrentLogEntries(localStorage, true);
 
       if (currentLogEntries.length === 0) {
         currentLogEntries = message;
@@ -120,13 +120,14 @@ export class LocalStorageAppender extends Appender {
   }
 
   /** Gets the current log entries for today, performing any necessary housekeeping on old entries */
-  private getCurrentLogEntries(localStorage: Storage): string {
+  private getCurrentLogEntries(localStorage: Storage, appending: boolean): string {
     const key: string = this._keyPrefix + new Date().setHours(0, 0, 0, 0)
                                                     .toString();
 
     if (key !== this._currentKey) {
-      /* We're about to add a new key, so need to make sure we have `maxDays`-1 entries at most */
-      this.removeOldLogKeys(this._maxDays - 1);
+      /* If we're about to add a new key, so need to make sure we have `maxDays`-1 entries at most */
+      this.removeOldLogKeys(appending ? this._maxDays - 1
+                                      : this._maxDays);
 
       /* We'll reset `_currentLogEntries` just in case there are already log entries for today
         from a previous session.

@@ -133,7 +133,35 @@ describe('LocalStorageAppender', () => {
     expect(logEntries).toBe(message1 + appender.logEntryDelimiter + message2);
   });
 
-  it('should remove log entries when max days is exceeded', () => {
+  it('should only remove log entries when > max days exists at initialization', () => {
+    jasmine.clock().withMock(() => {
+      const yesterdayTimestamp: number = Date.now();
+      let appender: LocalStorageAppender = new LocalStorageAppender();
+      appender.initialize({ ...APPENDER_CONFIG,
+                            maxDays: MAX_DAYS + 1
+                          });
+
+      /* Add the max number of entries *prior* to today, so when we reinitialize the appender
+        for today with reduced `maxDays`, we're left with the correct number of entries.
+      */
+      for (let i: number = appender.maxDays - 1; i >= 0; i--) {
+        jasmine.clock().mockDate(new Date(yesterdayTimestamp - (i * MILLISECS_PER_DAY)));
+
+        const message: string = Random.getString(RANDOM_MESSAGE_LENGTH);
+        const loggingEvent: LoggingEvent = new LoggingEvent(Level.debug, '', message);
+        appender.append(loggingEvent);
+      }
+
+      expect(localStorage.length).toBe(appender.maxDays);
+
+      /* Now reduce the max days and reinitialize */
+      appender = new LocalStorageAppender();
+      appender.initialize(APPENDER_CONFIG);
+      expect(localStorage.length).toBe(appender.maxDays);
+    });
+  });
+
+  it('should remove log entries when max days is exceeded on appending new entries', () => {
     jasmine.clock().withMock(() => {
       const todayTimestamp: number = Date.now();
       const appender: LocalStorageAppender = new LocalStorageAppender();
