@@ -94,6 +94,48 @@ describe('LogService', () => {
     MockatooAppender.lastOutput = '';
   });
 
+  describe('`configure()` method', () => {
+    it('should allow a new configuration to be loaded', () => {
+      const logServiceConfig: LogServiceConfig = {
+        loggers: [
+          {
+            loggerName: '',
+            level: 'info',
+            appenderNames: [
+              MOCK_APPENDER_NAME
+            ]
+          }
+        ],
+        appenders: [
+          {
+            name: MOCK_APPENDER_NAME,
+            providerToken: MOCK_APPENDER_TOKEN,
+            logFormat: MOCK_APPENDER_NAME + ':' + AppenderPlaceholders.Message,  /* So we can check the output easily */
+            errorFormat: undefined
+          }
+        ]
+      };
+
+      logService.configure(logServiceConfig);
+
+      const logger: Logger = logService.getLogger(Random.getString(RANDOM_LOGGER_NAME_LENGTH));
+      let infoMessage: string = Random.getString(RANDOM_MESSAGE_LENGTH);
+      let debugMessage: string = Random.getString(RANDOM_MESSAGE_LENGTH);
+
+      logger.info(infoMessage);
+      logger.debug(debugMessage);
+      expect(MockAppender.lastOutput).toBe(MOCK_APPENDER_NAME + ':' + infoMessage);
+
+      logServiceConfig.loggers[0].level = Level.debug.name;
+      infoMessage = Random.getString(RANDOM_MESSAGE_LENGTH);
+      debugMessage = Random.getString(RANDOM_MESSAGE_LENGTH);
+
+      logger.info(infoMessage);
+      logger.debug(debugMessage);
+      expect(MockAppender.lastOutput).toBe(MOCK_APPENDER_NAME + ':' + debugMessage);
+    });
+  });
+
   describe('`getLogger(string)` method', () => {
     it('should create a new logger if name doesn\'t exist', () => {
       const loggerName: string = Random.getString(RANDOM_LOGGER_NAME_LENGTH);
@@ -248,6 +290,59 @@ describe('LogService', () => {
 
       message = Random.getString(RANDOM_MESSAGE_LENGTH);
       logger.fatal(message);
+      expect(MockAppender.lastOutput).toBe(MOCK_APPENDER_NAME + ':' + message);
+    });
+
+    it('respects any change to the configured level to determine log dispatch', () => {
+      const logServiceConfig: LogServiceConfig = {
+        loggers: [
+          {
+            loggerName: MOCK_LOGGER_NAME,
+            level: 'info',
+            appenderNames: [
+              MOCK_APPENDER_NAME
+            ]
+          }
+        ],
+        appenders: [
+          {
+            name: MOCK_APPENDER_NAME,
+            providerToken: MOCK_APPENDER_TOKEN,
+            logFormat: MOCK_APPENDER_NAME + ':' + AppenderPlaceholders.Message,  /* So we can check the output easily */
+            errorFormat: undefined
+          }
+        ]
+      };
+
+      logService.configure(logServiceConfig);
+
+      const logger: Logger = logService.getLogger(MOCK_LOGGER_NAME);
+      let message: string;
+
+      message = Random.getString(RANDOM_MESSAGE_LENGTH);
+      logger.debug(message);
+      expect(MockAppender.lastOutput).toBe('');
+
+      message = Random.getString(RANDOM_MESSAGE_LENGTH);
+      logger.info(message);
+      expect(MockAppender.lastOutput).toBe(MOCK_APPENDER_NAME + ':' + message);
+
+      logServiceConfig.loggers[0].level = Level.warn.name;
+      MockAppender.lastOutput = '';
+
+      message = Random.getString(RANDOM_MESSAGE_LENGTH);
+      logger.info(message);
+      expect(MockAppender.lastOutput).toBe('');
+
+      message = Random.getString(RANDOM_MESSAGE_LENGTH);
+      logger.warn(message);
+      expect(MockAppender.lastOutput).toBe(MOCK_APPENDER_NAME + ':' + message);
+
+      logServiceConfig.loggers[0].level = Level.debug.name;
+      MockAppender.lastOutput = '';
+
+      message = Random.getString(RANDOM_MESSAGE_LENGTH);
+      logger.debug(message);
       expect(MockAppender.lastOutput).toBe(MOCK_APPENDER_NAME + ':' + message);
     });
 
