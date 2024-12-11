@@ -7,6 +7,19 @@ import { Logger } from './logger';
 import { LoggerConfig } from './logger-config';
 import { LoggingEvent } from './logging-event';
 
+/**
+ *
+ *
+ * ``` typescript
+ * export class MyComponent {
+ *   private readonly _log: Logger;
+ *
+ *   constructor(logService: LogService) {
+ *     this._log = logService.getLogger(this);
+ *   }
+ * }
+ * ```
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -45,6 +58,13 @@ export class LogService {
   }
 
   public getLogger(name: string): Logger;
+  /**
+   *
+   * @param instance
+   *
+   * IMPORTANT  This overload should not be used if your build system minifies or otherwise mangles
+   * class names and you intend including the class name in your log output.
+   */
   public getLogger(instance: object): Logger;
   public getLogger(nameOrObject: string | object): Logger {
     let name: string;

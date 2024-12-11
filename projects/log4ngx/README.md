@@ -1,6 +1,7 @@
 # log4ngx
 
-log4ngx is a Typescript logging framework for Angular projects, based on concepts used in Log4j, Log4net, etc.
+log4ngx is a Typescript logging framework for Angular projects, based on concepts used in Log4j,
+Log4net, etc.
 
 ## Concepts
 
@@ -20,4 +21,4 @@ The `LogService` is the factory with which you instantiate `Loggers` in each of 
 
 The `LogService` is configured using an instance of the `LogServiceConfig`, typically created in your application's main module.  The configuration defines the parameters used with each `Appender` and how each `Appender` relates to the various `Loggers`.
 
-For more information about using and configuring log4ngx, see <https://secondbounce.github.io/log4ngx/>.
+For more information about using and configuring log4ngx, see <https://secondbounce.github.io/log4ngx/>.  The demo project (in the _projects/demo/_ folder of the repo) also contains examples of configuring and using the library.

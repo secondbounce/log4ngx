@@ -18,7 +18,7 @@ export class Logger {
    * `Logger` instances should **NOT** be instantiated directly using this constructor as the instance
    * will not be registered and cached within the {@link LogService}.  (This will mean that every instance
    * of the parent class will end up with its own duplicate copy, rather than sharing a single instance.)
-   * Instead, use the {@link LogService.getLogger}, i.e.
+   * Instead, use the {@link LogService.getLogger}() method, i.e.
    * ```
    *    this._log = logService.getLogger('MyComponent');
    * ```

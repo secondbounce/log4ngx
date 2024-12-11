@@ -6,14 +6,16 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/secondbounce/log4ngx.git"
+    "url": "git+https://github.com/secondbounce/log4ngx.git"
   },
   "bugs": {
     "url": "https://github.com/secondbounce/log4ngx/issues"
   },
   "keywords": [
     "angular",
-    "log4",
+    "log",
+    "log4j",
+    "logger",
     "logging",
     "typescript"
   ],
