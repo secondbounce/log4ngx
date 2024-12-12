@@ -184,8 +184,10 @@ export class LocalStorageAppender extends Appender {
 
   private isQuotaExceededError(exception: unknown): boolean {
     return (exception instanceof DOMException
+/* eslint-disable @typescript-eslint/no-deprecated -- need to support older browsers, just in case */
          && (exception.code === NONFIREFOX_LEGACY_CODE_VALUE_QUOTA_EXCEEDED
           || exception.code === FIREFOX_LEGACY_CODE_VALUE_QUOTA_EXCEEDED
+/* eslint-enable @typescript-eslint/no-deprecated */
           /* Test name field too, because code might not be present */
           || exception.name === NONFIREFOX_LEGACY_NAME_VALUE_QUOTA_EXCEEDED
           || exception.name === FIREFOX_LEGACY_NAME_VALUE_QUOTA_EXCEEDED));

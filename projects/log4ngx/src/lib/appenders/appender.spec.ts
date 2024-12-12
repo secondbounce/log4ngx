@@ -332,8 +332,8 @@ describe('Base Appender', () => {
           any package upgrades, etc, will cause this test to fail. So we'll try to use regexes that minimise
           the chance of failure.
         */
-        const pattern: RegExp = /Edge/.test(window.navigator.userAgent) ? new RegExp(/at TestBedViewEngine\.prototype\.execute/)
-                                                                        : new RegExp(/appender\.spec\.(ts|js)/);
+        const pattern: RegExp = /Edge/.test(globalThis.navigator.userAgent) ? new RegExp(/at TestBedViewEngine\.prototype\.execute/)
+                                                                            : new RegExp(/appender\.spec\.(ts|js)/);
         expect(appender.renderLoggingEvent(loggingEvent)).toMatch(pattern);
       }
     });
