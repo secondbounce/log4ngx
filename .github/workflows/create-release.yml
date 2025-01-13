@@ -79,7 +79,7 @@ jobs:
           package-json-path: './projects/log4ngx/package.json'
 
       - name: Commit updated package
-        uses: stefanzweifel/git-auto-commit-action@8621497c8c39c72f3e2a999a26b4ca1b5058a842 # v5.0.1
+        uses: stefanzweifel/git-auto-commit-action@e348103e9026cc0eee72ae06630dbe30c8bf7a79 # v5.1.0
         with:
           commit_message: NPM package version updated to ${{ steps.get-version.outputs.version }}
           branch: main
