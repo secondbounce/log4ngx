@@ -18,11 +18,17 @@ module.exports = tseslint.config(
     }
   },
   {
-    files: ['**/*.ts'],
+    /* Directory ignores can only be specified in a global section (see
+      https://github.com/eslint/eslint/discussions/17429), so this *must* be
+      in a section on its own.
+    */
     ignores: [
-      '**/.unused/*.*',
+      '**/.unused/',
       '**/*.unused.ts'
-    ],
+    ]
+  },
+  {
+    files: ['**/*.ts'],
     extends: [
       eslint.configs.recommended,                       // https://github.com/eslint/eslint/blob/main/packages/js/src/configs/eslint-recommended.js
       stylistic.configs['recommended-flat'],
