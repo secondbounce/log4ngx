@@ -8,6 +8,11 @@ import { LoggingEvent } from './logging-event';
 import { MockLogService } from './mock-log.service';
 import { Random } from './utility';
 
+interface LoggerMethod { (message: string): void;
+                         (error: Error): void;
+                         (message: string, error: Error | object): void;
+                       };
+
 const LOG_SERVICE_CONFIG: LogServiceConfig = {
   loggers: [],
   appenders: []
@@ -29,7 +34,7 @@ describe('Logger', () => {
     it('should interpret overloaded arguments correctly', inject([LogService], (logService: MockLogService) => {
       const logger: Logger = new Logger(Random.getString(RANDOM_STRING_LENGTH), logService);
 
-      testLoggerOverloads(logService, logger, logger.debug.bind(logger), Level.debug);
+      testLoggerOverloads(logService, logger, logger.debug.bind(logger) as LoggerMethod, Level.debug);
     }));
   });
 
@@ -37,7 +42,7 @@ describe('Logger', () => {
     it('should interpret overloaded arguments correctly', inject([LogService], (logService: MockLogService) => {
       const logger: Logger = new Logger(Random.getString(RANDOM_STRING_LENGTH), logService);
 
-      testLoggerOverloads(logService, logger, logger.info.bind(logger), Level.info);
+      testLoggerOverloads(logService, logger, logger.info.bind(logger) as LoggerMethod, Level.info);
     }));
   });
 
@@ -45,7 +50,7 @@ describe('Logger', () => {
     it('should interpret overloaded arguments correctly', inject([LogService], (logService: MockLogService) => {
       const logger: Logger = new Logger(Random.getString(RANDOM_STRING_LENGTH), logService);
 
-      testLoggerOverloads(logService, logger, logger.warn.bind(logger), Level.warn);
+      testLoggerOverloads(logService, logger, logger.warn.bind(logger) as LoggerMethod, Level.warn);
     }));
   });
 
@@ -53,7 +58,7 @@ describe('Logger', () => {
     it('should interpret overloaded arguments correctly', inject([LogService], (logService: MockLogService) => {
       const logger: Logger = new Logger(Random.getString(RANDOM_STRING_LENGTH), logService);
 
-      testLoggerOverloads(logService, logger, logger.error.bind(logger), Level.error);
+      testLoggerOverloads(logService, logger, logger.error.bind(logger) as LoggerMethod, Level.error);
     }));
   });
 
@@ -61,7 +66,7 @@ describe('Logger', () => {
     it('should interpret overloaded arguments correctly', inject([LogService], (logService: MockLogService) => {
       const logger: Logger = new Logger(Random.getString(RANDOM_STRING_LENGTH), logService);
 
-      testLoggerOverloads(logService, logger, logger.fatal.bind(logger), Level.fatal);
+      testLoggerOverloads(logService, logger, logger.fatal.bind(logger) as LoggerMethod, Level.fatal);
     }));
   });
 
@@ -193,10 +198,7 @@ describe('Logger', () => {
 
 function testLoggerOverloads(logService: MockLogService,
                              logger: Logger,
-                             methodToTest: { (message: string): void;
-                                             (error: Error): void;
-                                             (message: string, error: Error | object): void;
-                                           },
+                             methodToTest: LoggerMethod,
                              level: Level): void {
   let message: string;
   let error: Error;

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Logger, LogService } from 'log4ngx';
 
@@ -13,7 +13,9 @@ import { Logger, LogService } from 'log4ngx';
 export class ChildPage implements OnInit, AfterViewInit {
   private readonly _log: Logger;
 
-  constructor(logService: LogService) {
+  constructor() {
+    const logService: LogService = inject(LogService);
+
     this._log = logService.getLogger(this);
   }
 

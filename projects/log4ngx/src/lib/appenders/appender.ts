@@ -32,19 +32,19 @@ export /*not const*/ enum AppenderPlaceholders {
    * The logged Error's `name` property.
    *
    * Note that this placeholder is only valid within {@link AppenderConfig.errorFormat}.
-  */
+   */
   ErrorName = '{error-name}',
   /**
    * The logged Error's `message` property.
    *
    * Note that this placeholder is only valid within {@link AppenderConfig.errorFormat}.
-  */
+   */
   ErrorMessage = '{error-message}',
   /**
    * The logged Error's `stack` property.
    *
    * Note that this placeholder is only valid within {@link AppenderConfig.errorFormat}.
-  */
+   */
   ErrorStack = '{error-stack}',
   /** Carriage return/line feed characters, i.e. '\r\n'. */
   Crlf = '{crlf}',
@@ -62,7 +62,7 @@ export abstract class Appender {
   public initialize(config: AppenderConfig): void {
     this._name = config.name;
     this._logFormat = config.logFormat;
-    this._errorFormat = config.errorFormat || (AppenderPlaceholders.Crlf
+    this._errorFormat = config.errorFormat ?? (AppenderPlaceholders.Crlf
                                              + AppenderPlaceholders.ErrorName + ': ' + AppenderPlaceholders.ErrorMessage + AppenderPlaceholders.Crlf
                                              + AppenderPlaceholders.ErrorStack);
   }
@@ -83,6 +83,10 @@ export abstract class Appender {
     this.appendEvent(loggingEvent);
   }
 
+  /**
+   * @param loggingEvent The event information to be logged.
+   * @returns The event information formatted as a string according to the `Appender.logFormat`.
+   */
   protected renderLoggingEvent(loggingEvent: LoggingEvent): string {
     let logMessage: string = this._logFormat;
     logMessage = logMessage.split(AppenderPlaceholders.Level).join(loggingEvent.level.displayName);
@@ -125,10 +129,12 @@ export abstract class Appender {
   }
 
   private getSafeMessage(message: string): string {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- allow for usage in a non-strict environment
     if (message === null) {
       message = '<null>';
-    } else if (message === undefined) {
-      message = '<undefined>';
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- allow for usage in a non-strict environment
+      message ??= '<undefined>';
     }
 
     return message;

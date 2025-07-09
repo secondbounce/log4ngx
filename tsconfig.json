@@ -3,10 +3,15 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./dist/out-tsc",
     "strict": true,
+    /* HACK ALERT  `strictNullChecks` shouldn't really be needed since it defaults to `true`
+      when `strict` is specified. But if omitted, typescript-eslint complains that it can't
+      run null-related checks.
+    */
+    "strictNullChecks": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
+    "noImplicitAny": true,
     "noImplicitReturns": true,
     "paths": {
       "log4ngx": [
@@ -14,31 +19,36 @@
       ]
     },
     "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
     "isolatedModules": true,
-    "esModuleInterop": true,
     "sourceMap": true,
-    "declaration": false,
     "experimentalDecorators": true,
-    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022",
-    "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ]
+    "module": "preserve"
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
+    "typeCheckHostBindings": true,
     "strictTemplates": true
   },
+  "files": [],
+  "references": [
+    {
+      "path": "./projects/log4ngx/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/log4ngx/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/demo/tsconfig.app.json"
+    }
+  ],
   "exclude": [
-    "src/**/.unused/*.ts",
-    "src/**/*.unused.ts",
-    "**/*.unused"
+    "**/*.unused",
+    "**/.unused/*.ts",
+    "**/*.unused.ts"
   ]
 }

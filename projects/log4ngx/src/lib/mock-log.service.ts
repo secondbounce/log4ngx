@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { LOG_SERVICE_CONFIG_TOKEN, LogServiceConfig } from './log-service-config';
 import { LogService } from './log.service';
@@ -8,7 +8,9 @@ import { LoggingEvent } from './logging-event';
 export class MockLogService extends LogService {
   public lastLoggingEvent: LoggingEvent | undefined;
 
-  constructor(@Inject(LOG_SERVICE_CONFIG_TOKEN) config: LogServiceConfig) {
+  constructor() {
+    const config: LogServiceConfig = inject<LogServiceConfig>(LOG_SERVICE_CONFIG_TOKEN);
+
     super(config);
   }
 

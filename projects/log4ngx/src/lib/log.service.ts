@@ -29,6 +29,7 @@ export class LogService {
   private _loggerConfigs: Map<string, LoggerConfig> = new Map<string, LoggerConfig>();
   private _environmentInjector = inject(EnvironmentInjector);
 
+  // eslint-disable-next-line @angular-eslint/prefer-inject -- injecting via constructor allows config to be passed in for testing
   constructor(@Inject(LOG_SERVICE_CONFIG_TOKEN) config: LogServiceConfig) {
     this.configure(config);
   }
@@ -57,22 +58,22 @@ export class LogService {
     }
   }
 
-  public getLogger(name: string): Logger;
   /**
+   * IMPORTANT  Passing a string value for `nameOrInstance`, rather than an object is recommended
+   * if your build system minifies or otherwise mangles class names and you intend including the
+   * class name in your log output.
    *
-   * @param instance
-   *
-   * IMPORTANT  This overload should not be used if your build system minifies or otherwise mangles
-   * class names and you intend including the class name in your log output.
+   * @param nameOrInstance A string value containing the name of the `Logger` or an `object` the
+   * name of which will be used.
+   * @returns The `Logger` associated with the specified name.
    */
-  public getLogger(instance: object): Logger;
-  public getLogger(nameOrObject: string | object): Logger {
+  public getLogger(nameOrInstance: string | object): Logger {
     let name: string;
 
-    if (typeof nameOrObject === 'object') {
-      name = nameOrObject.constructor.name;
+    if (typeof nameOrInstance === 'object') {
+      name = nameOrInstance.constructor.name;
     } else {
-      name = nameOrObject;
+      name = nameOrInstance;
     }
 
     let logger: Logger | undefined = this._loggers.get(name);
@@ -87,12 +88,9 @@ export class LogService {
 
   public dispatch(loggingEvent: LoggingEvent): void {
     let loggerConfig: LoggerConfig | undefined = this._loggerConfigs.get(loggingEvent.loggerName);
+    loggerConfig ??= this._loggerConfigs.get('');
 
-    if (!loggerConfig) {
-      loggerConfig = this._loggerConfigs.get('');
-    }
-
-    if (loggerConfig) {
+    if (loggerConfig !== undefined) {
       const level: Level | undefined = Level.getLevel(loggerConfig.level);
 
       /* Need to check if a level was returned just in case the name in the config is wrong */

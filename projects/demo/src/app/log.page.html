@@ -1,7 +1,14 @@
+<h2>Logging to local storage</h2>
 <p>This page lists the log entries logged via the LocalStorageAppender.</p>
 <p><a [routerLink]="['/']">Click here</a> to go to a page that initializes the logger from a string</p>
 <p><a [routerLink]="['/child']">Click here</a> to go to a page that initializes the logger from the component itself</p>
-<section *ngFor="let dailyLogs of this.logEntries | keyvalue ">
-	<h2>{{ dailyLogs.key| date }}</h2>
-	<p *ngFor="let entry of dailyLogs.value">{{ entry }}</p>
+
+@for (dailyLogs of this.logEntries | keyvalue; track dailyLogs.key) {
+<section>
+	<h3>{{ dailyLogs.key| date }}</h3>
+
+	@for (entry of dailyLogs.value; track $index) {
+	<p>{{ entry }}</p>
+	}
 </section>
+}

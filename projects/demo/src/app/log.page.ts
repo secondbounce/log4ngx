@@ -1,5 +1,5 @@
-import { DatePipe, KeyValuePipe, NgFor } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { DatePipe, KeyValuePipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LOCALSTORAGE_APPENDER_TOKEN, LocalStorageAppender, Logger, LogService } from 'log4ngx';
 
@@ -11,16 +11,18 @@ import { LOCALSTORAGE_APPENDER_TOKEN, LocalStorageAppender, Logger, LogService }
   imports: [
     DatePipe,
     KeyValuePipe,
-    NgFor,
     RouterLink
   ]
 })
 export class LogPage implements OnInit {
+  private _localStorageAppender = inject<LocalStorageAppender>(LOCALSTORAGE_APPENDER_TOKEN);
+
   public logEntries: Map<Date, string[]> = new Map<Date, string[]>();
   private readonly _log: Logger;
 
-  constructor(@Inject(LOCALSTORAGE_APPENDER_TOKEN) private _localStorageAppender: LocalStorageAppender,
-              logService: LogService) {
+  constructor() {
+    const logService: LogService = inject(LogService);
+
     this._log = logService.getLogger(this);
   }
 
@@ -50,7 +52,7 @@ export class LogPage implements OnInit {
 
     for (let i: number = localStorage.length - 1; i >= 0; i--) {
       const key: string | null = localStorage.key(i);
-      if (key !== null && key.startsWith(keyPrefix)) {
+      if (key?.startsWith(keyPrefix)) {
         logKeys.push(key);
       }
     }

@@ -6,6 +6,7 @@ export /*not const*/ enum LevelValue {
   Warn = 300,
   Error = 400,
   Fatal = 500,
+  // eslint-disable-next-line @typescript-eslint/prefer-literal-enum-member -- constant is global scope
   Off = Number.MAX_VALUE
 }
 
@@ -37,11 +38,13 @@ export class Level {
   }
 
   public static add(value: number, name: string, displayName: string): Level {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- allow for usage in a non-strict environment
     if (value === undefined || value === null) {
       console.error('LOG4NGX: A numeric value must be specified for \'value\'');
       throw new Error('LOG4NGX: A numeric value must be specified for \'value\'');
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- allow for usage in a non-strict environment
     if (name === undefined || name === null || name.length === 0) {
       console.error('LOG4NGX: A non-null, non-empty string value must be specified for \'name\'');
       throw new Error('LOG4NGX: A non-null, non-empty string value must be specified for \'name\'');
@@ -63,12 +66,13 @@ export class Level {
   }
 
   public static getLevel(levelName: string): Level | undefined {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- allow for usage in a non-strict environment
     if (levelName === undefined || levelName === null || levelName.length === 0) {
       console.error('LOG4NGX: No level name specified');
     }
 
     const level: Level | undefined = this._levels.get(levelName.toLowerCase());
-    if (!level) {
+    if (level === undefined) {
       console.error(`LOG4NGX: No level defined for '${levelName.toLowerCase()}'`);
     }
 
@@ -84,6 +88,7 @@ export class Level {
   }
 
   private static ensureDisplayNameValid(displayName: string): void {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- allow for usage in a non-strict environment
     if (displayName === undefined || displayName === null) {
       console.error('LOG4NGX: A string value must be specified for \'displayName\'');
       throw new Error('LOG4NGX: A string value must be specified for \'displayName\'');

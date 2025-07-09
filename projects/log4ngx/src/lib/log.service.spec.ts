@@ -166,10 +166,11 @@ describe('LogService', () => {
     it('should cache loggers under the object\'s type name', () => {
       const instance: object = new MockAppender();
       const logger: Logger = logService.getLogger(instance);
+      const loggerName: string = instance.constructor.name;   /* Because Angular mangles class names <sigh> */
 
       expect(logger).toBeDefined();
-      expect(logger.name).toBe('MockAppender');
-      expect(logService.getLogger('MockAppender')).toBe(logger);
+      expect(logger.name).toBe(loggerName);
+      expect(logService.getLogger(loggerName)).toBe(logger);
     });
 
     it('should return cached copy of logger if object\'s type name already exists', () => {

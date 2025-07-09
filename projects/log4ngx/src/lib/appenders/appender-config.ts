@@ -8,13 +8,15 @@ export interface AppenderConfig {
   name: string;
   /** The [InjectionToken](https://angular.dev/api/core/InjectionToken) provided for the required {@link Appender}. */
   providerToken: InjectionToken<Appender>;
-  /** The string format for each log entry.
+  /**
+   * The string format for each log entry.
    *
    * The format string may include both string literals and {@link AppenderPlaceholders} which will
    * be replaced with the corresponding value.
-  */
+   */
   logFormat: string;
-  /** The string format for [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)s
+  /**
+   * The string format for [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)s
    * included with a log entry.
    *
    * The format string may include both string literals and {@link AppenderPlaceholders} which will

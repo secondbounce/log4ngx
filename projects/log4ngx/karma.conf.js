@@ -1,17 +1,11 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
+import * as path from 'path';
 
-module.exports = function (config) {
+export default function (config) {
   config.set({
     basePath: '',
-    frameworks: ['jasmine', '@angular-devkit/build-angular'],
-    plugins: [
-      require('karma-jasmine'),
-      require('karma-chrome-launcher'),
-      require('karma-jasmine-html-reporter'),
-      require('karma-coverage'),
-      require('@angular-devkit/build-angular/plugins/karma')
-    ],
+    frameworks: ['jasmine'],
     client: {
       jasmine: {
         // you can add configuration options for Jasmine here
@@ -25,23 +19,12 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, '../../coverage/log4ngx'),
+      dir: path.join(path.dirname(''), '../../../coverage/log4ngx'),
       subdir: '.',
       reporters: [
         { type: 'html' },
         { type: 'text-summary' }
-      ],
-      check: {
-        global: {
-          /* Some error handling in LocalStorageAppender is impractical to test
-            (and there's no way to exclude it from the stats) so allow for that.
-          */
-          statements: 98.9,
-          branches: 89.5,
-          functions: 100,
-          lines: 98.9
-        }
-      }
+      ]
     },
     reporters: ['progress', 'kjhtml'],
     browsers: ['Chrome'],

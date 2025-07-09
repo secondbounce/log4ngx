@@ -5,12 +5,12 @@
   "compilerOptions": {
     "outDir": "../../out-tsc/spec",
     "strict": false,  /* So we can test in non-strict use */
+    "strictNullChecks": false,  /* So we can test in non-strict use */
     "types": [
       "jasmine"
     ]
   },
   "include": [
-    "**/*.spec.ts",
-    "**/*.d.ts"
+    "src/**/*.ts"
   ]
 }

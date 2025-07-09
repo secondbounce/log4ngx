@@ -90,9 +90,10 @@ export class LocalStorageAppender extends Appender {
             retry = this.removeOldLogKeys(1);
             // eslint-disable-next-line no-console -- nowhere else we can note this
             console.warn(retry ? 'LOG4NGX: LocalStorage quota has been exceeded; old logs removed so will retry logging'
+                               // eslint-disable-next-line @typescript-eslint/restrict-template-expressions -- it's only a last resort
                                : `LOG4NGX: LocalStorage quota has been exceeded (${error})`);
           } else {
-            // eslint-disable-next-line no-console -- nowhere else we can note this
+            // eslint-disable-next-line no-console, @typescript-eslint/restrict-template-expressions -- nowhere else we can note this
             console.warn(`LOG4NGX: Error occurred logging entry to (${error})`);
           }
         }
@@ -148,7 +149,7 @@ export class LocalStorageAppender extends Appender {
       between sessions.
     */
     while (logKeys.length > maxKeys) {
-      const logKey: string | undefined = logKeys.shift();
+      const logKey: string = logKeys.shift() ?? '';
       localStorage.removeItem(this._keyPrefix + logKey);
       handled = true;
     }
@@ -161,13 +162,15 @@ export class LocalStorageAppender extends Appender {
     return handled;
   }
 
-  /** Returns the existing log-related keys, sorted in date order */
+  /**
+   * @returns The existing log-related keys, sorted in date order.
+   */
   private getLogKeys(localStorage: Storage): string[] {
     const logKeys: string[] = [];
 
     for (let i: number = localStorage.length - 1; i >= 0; i--) {
       const existingKey: string | null = localStorage.key(i);
-      if (existingKey !== null && existingKey.startsWith(this._keyPrefix)) {
+      if (existingKey?.startsWith(this._keyPrefix)) {
         logKeys.push(existingKey.slice(this._keyPrefix.length));
       }
     }

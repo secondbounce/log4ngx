@@ -17,7 +17,12 @@ export class MockatooAppender extends Appender {
     MockatooAppender.lastOutput = message;
   }
 
-  /** This override just changes the method's access modifier so it can be called by the tests. */
+  /**
+   * This override just changes the method's access modifier so it can be called by the tests.
+   *
+   * @param loggingEvent The event information to be logged.
+   * @returns The event information formatted as a string according to the `Appender.logFormat`.
+   */
   public override renderLoggingEvent(loggingEvent: LoggingEvent): string {
     return super.renderLoggingEvent(loggingEvent);
   }

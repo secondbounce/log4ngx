@@ -1,0 +1,71 @@
+main {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  box-sizing: inherit;
+  position: relative;
+}
+
+.angular-logo {
+  max-width: 9.2rem;
+}
+
+.content {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 700px;
+  margin-bottom: 3rem;
+}
+
+h1 {
+  letter-spacing: -0.125rem;
+  margin-top: 1.75rem;
+}
+
+p {
+  margin-top: 1.5rem;
+}
+
+.left-side {
+  margin-inline-end: 1.5em;
+  width: 35rem;
+}
+
+.divider {
+  width: 1px;
+  background: var(--red-to-pink-to-purple-vertical-gradient);
+}
+
+.right-side {
+  margin-inline-start: 1.5em;
+}
+
+@media screen and (max-width: 650px) {
+  .content {
+    flex-direction: column;
+    width: max-content;
+  }
+
+  .left-side {
+    width: 100%;
+  }
+
+  .divider {
+    height: 1px;
+    width: 100%;
+    background: var(--red-to-pink-to-purple-horizontal-gradient);
+    margin-block: 1.5rem;
+  }
+
+  .right-side {
+    margin-inline-start: 0;
+  }
+
+  h2 {
+    margin-block-start: 0;
+  }
+}

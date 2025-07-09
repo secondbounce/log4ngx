@@ -1,23 +1,28 @@
 // @ts-check
-const tseslint = require("typescript-eslint");
-const rootConfig = require("../../eslint.config.js");
+import tseslint from 'typescript-eslint';
+import rootConfig from '../../eslint.config.js';
 
-module.exports = tseslint.config(
+export default tseslint.config(
   ...rootConfig,
   {
-    languageOptions: {
-      parserOptions: {
-        project: './tsconfig.spec.json',
-      },
+    files: ["**/*.ts"],
+    rules: {
+      "@angular-eslint/directive-selector": [
+        "error",
+        {
+          type: "attribute",
+          prefix: "log",
+          style: "camelCase"
+        }
+      ],
+      "@angular-eslint/component-selector": [
+        "error",
+        {
+          type: "element",
+          prefix: "log",
+          style: "kebab-case"
+        }
+      ]
     }
   }
-  /* No project-specific rules (yet) */
-  // {
-  //   files: ["**/*.ts"],
-  //   rules: {},
-  // },
-  // {
-  //   files: ["**/*.html"],
-  //   rules: {},
-  // }
 );

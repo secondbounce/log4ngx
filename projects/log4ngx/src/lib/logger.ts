@@ -9,11 +9,10 @@ const JSON_INDENT_IN_SPACES: number = 2;
  *
  * Typically, each component or service will instantiate its own `Logger` instance, which will include
  * the logger's {@link Logger.name} in the logged message.
- *
- * @property name - A name, usually that of the 'parent' component, that will be logged with each message.
  */
 export class Logger {
-  /** Instantiates a new `Logger`.
+  /**
+   * Instantiates a new `Logger`.
    *
    * `Logger` instances should **NOT** be instantiated directly using this constructor as the instance
    * will not be registered and cached within the {@link LogService}.  (This will mean that every instance
@@ -22,6 +21,10 @@ export class Logger {
    * ```
    *    this._log = logService.getLogger('MyComponent');
    * ```
+   *
+   * @param name - A name, usually that of the 'parent' component, that will be logged with each message.
+   * @param _logService - `LogService` instance that the logger will dispatch messages to.
+   *
    * @internal
    */
   constructor(public readonly name: string,

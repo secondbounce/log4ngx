@@ -9,10 +9,10 @@
     "inlineSources": true,
     "types": []
   },
+  "include": [
+    "src/**/*.ts"
+  ],
   "exclude": [
-    "**/*.spec.ts",
-    "src/**/.unused/*.ts",
-    "src/**/*.unused.ts",
-    "**/*.unused"
+    "**/*.spec.ts"
   ]
 }

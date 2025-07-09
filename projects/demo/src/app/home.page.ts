@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Logger, LogService } from 'log4ngx';
 
@@ -13,7 +13,9 @@ import { Logger, LogService } from 'log4ngx';
 export class HomePage implements OnInit {
   private readonly _log: Logger;
 
-  constructor(logService: LogService) {
+  constructor() {
+    const logService: LogService = inject(LogService);
+
     /* Let's use a custom name for this logger */
     this._log = logService.getLogger('<This is the HomePage>');
     this._log.debug('This is a debug message logged in the constructor');
