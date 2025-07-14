@@ -97,7 +97,7 @@ jobs:
 
       - name: Create draft Github pre-release for ${{ steps.get-version.outputs.version }} (${{ env.IS_PRERELEASE }})
         if: env.IS_PRERELEASE == 'true'
-        uses: softprops/action-gh-release@c95fe1489396fe8a9eb87c0abf8aa5b2ef267fda # v2.2.1
+        uses: softprops/action-gh-release@72f2c25fcb47643c292f7107632f7a47c1df5cd8 # v2.3.2
         with:
           name: ${{ steps.get-version.outputs.version }}
           tag_name: ${{ steps.get-version.outputs.version }}
@@ -106,7 +106,7 @@ jobs:
 
       - name: Create draft Github release for ${{ steps.get-version.outputs.version }} (!${{ env.IS_PRERELEASE }})
         if: env.IS_PRERELEASE == 'false'
-        uses: softprops/action-gh-release@c95fe1489396fe8a9eb87c0abf8aa5b2ef267fda # v2.2.1
+        uses: softprops/action-gh-release@72f2c25fcb47643c292f7107632f7a47c1df5cd8 # v2.3.2
         with:
           name: ${{ steps.get-version.outputs.version }}
           tag_name: ${{ steps.get-version.outputs.version }}
