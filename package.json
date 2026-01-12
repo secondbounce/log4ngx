@@ -59,7 +59,7 @@
   "devDependencies": {
     "@angular/build": "^20.0.4",
     "@angular/cli": "^20.0.4",
-    "@angular/compiler-cli": "^20.0.0",
+    "@angular/compiler-cli": "^21.0.8",
     "@stylistic/eslint-plugin": "^5.1.0",
     "@types/jasmine": "~5.1.0",
     "angular-eslint": "20.1.1",
