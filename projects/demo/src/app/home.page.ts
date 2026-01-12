@@ -23,8 +23,8 @@ export class HomePage implements OnInit {
 
   public ngOnInit(): void {
     this._log.info('OnInit lifecycle event triggered');
-    this._log.warn('This is an example of a message logged at `warn` level');
-    this._log.error('Similarly, this is just an example of a message logged at `error` level');
+    this._log.warn('This is an example of a message logged at `warn` level', { text: 'This is sample data that will be logged with the message', value: 42, isDummyData: true });
+    this._log.error('Similarly, this is just an example of a message logged at `error` level', new Error('This is a sample error object that will be logged with the message'));
     this._log.fatal('And finally, an example of a messsage logged at `fatal` level');
   }
 }

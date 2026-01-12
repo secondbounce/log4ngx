@@ -68,10 +68,10 @@ export class Logger {
    * The log entry is recorded as {@link Level.error}.
    *
    * @param condition - A boolean value or statement that determines if the message is logged or not.
-   * @param data - An `object` to be logged.
+   * @param data - A data value or object to be logged.
    */
-  public assert(condition: boolean | undefined, message: string, data: object): void;
-  public assert(condition: boolean | undefined, messageOrError: string | Error, errorOrData?: Error | object): void {
+  public assert(condition: boolean | undefined, message: string, data: any): void;
+  public assert(condition: boolean | undefined, messageOrError: string | Error, errorOrData?: any): void {
     if (condition !== true) {
       this.dispatchLoggingEvent(Level.error, messageOrError, errorOrData);
     }
@@ -100,10 +100,10 @@ export class Logger {
    * Logs the message as {@link Level.debug}.
    *
    * @param message - The text message to be logged.
-   * @param data - An `object` to be logged.
+   * @param data - A data value or object to be logged.
    */
-  public debug(message: string, data: object): void;
-  public debug(messageOrError: string | Error, errorOrData?: Error | object): void {
+  public debug(message: string, data: any): void;
+  public debug(messageOrError: string | Error, errorOrData?: any): void {
     this.dispatchLoggingEvent(Level.debug, messageOrError, errorOrData);
   }
 
@@ -130,10 +130,10 @@ export class Logger {
    * Logs the message as {@link Level.info}.
    *
    * @param message - The text message to be logged.
-   * @param data - An `object` to be logged.
+   * @param data - A data value or object to be logged.
    */
-  public info(message: string, data: object): void;
-  public info(messageOrError: string | Error, errorOrData?: Error | object): void {
+  public info(message: string, data: any): void;
+  public info(messageOrError: string | Error, errorOrData?: any): void {
     this.dispatchLoggingEvent(Level.info, messageOrError, errorOrData);
   }
 
@@ -160,10 +160,10 @@ export class Logger {
    * Logs the message as {@link Level.warn}.
    *
    * @param message - The text message to be logged.
-   * @param data - An `object` to be logged.
+   * @param data - A data value or object to be logged.
    */
-  public warn(message: string, data: object): void;
-  public warn(messageOrError: string | Error, errorOrData?: Error | object): void {
+  public warn(message: string, data: any): void;
+  public warn(messageOrError: string | Error, errorOrData?: any): void {
     this.dispatchLoggingEvent(Level.warn, messageOrError, errorOrData);
   }
 
@@ -190,10 +190,10 @@ export class Logger {
    * Logs the message as {@link Level.error}.
    *
    * @param message - The text message to be logged.
-   * @param data - An `object` to be logged.
+   * @param data - A data value or object to be logged.
    */
-  public error(message: string, data: object): void;
-  public error(messageOrError: string | Error, errorOrData?: Error | object): void {
+  public error(message: string, data: any): void;
+  public error(messageOrError: string | Error, errorOrData?: any): void {
     this.dispatchLoggingEvent(Level.error, messageOrError, errorOrData);
   }
 
@@ -220,10 +220,10 @@ export class Logger {
    * Logs the message as {@link Level.fatal}.
    *
    * @param message - The text message to be logged.
-   * @param data - An `object` to be logged.
+   * @param data - A data value or object to be logged.
    */
-  public fatal(message: string, data: object): void;
-  public fatal(messageOrError: string | Error, errorOrData?: Error | object): void {
+  public fatal(message: string, data: any): void;
+  public fatal(messageOrError: string | Error, errorOrData?: any): void {
     this.dispatchLoggingEvent(Level.fatal, messageOrError, errorOrData);
   }
 
@@ -260,19 +260,19 @@ export class Logger {
    *
    * @param levelName - The name of the level.
    * @param message - The text message to be logged.
-   * @param data - An `object` to be logged.
+   * @param data - A data value or object to be logged.
    *
    * If no {@link Level} has been defined for the specified `levelName`, the message will be ignored.
    */
-  public log(levelName: string, message: string, data: object): void;
-  public log(levelName: string, messageOrError: string | Error, errorOrData?: Error | object): void {
+  public log(levelName: string, message: string, data: any): void;
+  public log(levelName: string, messageOrError: string | Error, errorOrData?: any): void {
     const level: Level | undefined = Level.getLevel(levelName);
     if (level) {
       this.dispatchLoggingEvent(level, messageOrError, errorOrData);
     }
   }
 
-  private dispatchLoggingEvent(level: Level, messageOrError: string | Error, errorOrData?: Error | object): void {
+  private dispatchLoggingEvent(level: Level, messageOrError: string | Error, errorOrData?: any): void {
     let message: string;
     let error: Error | undefined;
 
@@ -286,7 +286,7 @@ export class Logger {
         error = errorOrData;
       } else {
         if (errorOrData !== undefined) {
-          message += '\n' + JSON.stringify(errorOrData, undefined, JSON_INDENT_IN_SPACES);
+          message += '\nData: ' + JSON.stringify(errorOrData, undefined, JSON_INDENT_IN_SPACES);
         }
 
         error = undefined;
