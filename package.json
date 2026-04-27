@@ -74,7 +74,7 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "ng-packagr": "^20.3.0",
     "typedoc": "^0.28.16",
-    "typedoc-plugin-coverage": "^4.0.2",
+    "typedoc-plugin-coverage": "^4.0.3",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.53.0"
   }
