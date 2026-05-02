@@ -7,10 +7,11 @@
     "strict": false,  /* So we can test in non-strict use */
     "strictNullChecks": false,  /* So we can test in non-strict use */
     "types": [
-      "jasmine"
+      "vitest/globals"
     ]
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.d.ts",
+    "src/**/*.spec.ts"
   ]
 }

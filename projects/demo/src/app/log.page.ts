@@ -7,7 +7,7 @@ import { LOCALSTORAGE_APPENDER_TOKEN, LocalStorageAppender, Logger, LogService }
   selector: 'app-log',
   templateUrl: './log.page.html',
   styleUrl: './log.page.scss',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DatePipe,
     KeyValuePipe,

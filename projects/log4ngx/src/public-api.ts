@@ -1,4 +1,6 @@
-/** API */
+/*
+ * Public API Surface of log4ngx
+ */
 export { Appender, AppenderPlaceholders } from './lib/appenders/appender';
 export { type AppenderConfig } from './lib/appenders/appender-config';
 export { ConsoleAppender, CONSOLE_APPENDER_TOKEN } from './lib/appenders/console-appender';

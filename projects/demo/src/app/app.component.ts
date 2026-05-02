@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Logger, LogService } from 'log4ngx';
 
@@ -6,13 +6,13 @@ import { Logger, LogService } from 'log4ngx';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterOutlet
   ]
 })
 export class AppComponent implements OnInit {
-  public title: string = 'Log4ngx Demo';
+  protected readonly title = signal('Log4ngx Demo');
   private readonly _log: Logger;
 
   constructor() {

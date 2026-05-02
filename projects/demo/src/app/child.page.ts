@@ -5,7 +5,7 @@ import { Logger, LogService } from 'log4ngx';
 @Component({
   selector: 'app-child',
   templateUrl: './child.page.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterLink
   ]

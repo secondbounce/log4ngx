@@ -1,13 +1,14 @@
 /// template.angular
 // @ts-check -- make sure this file valid too
 import eslint from '@eslint/js';
+import { defineConfig } from 'eslint/config'
 import stylistic from '@stylistic/eslint-plugin';
 import tseslint from 'typescript-eslint';
 import ngeslint from 'angular-eslint';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import jsdoc from 'eslint-plugin-jsdoc';
 
-export default tseslint.config(
+export default defineConfig([
   {
     languageOptions: {
       parserOptions: {
@@ -16,14 +17,14 @@ export default tseslint.config(
 // extension, preventing linting warnings/errors appearing in the editor (see issue
 // https://github.com/Microsoft/vscode-eslint/issues/1911).  So for now, use the 'old'
 // syntax.
-        // projectService: true,
-        project: [
-          './tsconfig.json',
-          './projects/*/tsconfig.app.json',
-          './projects/*/tsconfig.lib.json',
-          './projects/*/tsconfig.spec.json'
-        ],
-        tsconfigRootDir: import.meta.dirname
+        projectService: true
+        // project: [
+        //   './tsconfig.json',
+        //   './projects/*/tsconfig.app.json',
+        //   './projects/*/tsconfig.lib.json',
+        //   './projects/*/tsconfig.spec.json'
+        // ],
+        // tsconfigRootDir: import.meta.dirname
       }
     }
   },
@@ -44,7 +45,7 @@ export default tseslint.config(
       eslint.configs.recommended,                       // https://github.com/eslint/eslint/blob/main/packages/js/src/configs/eslint-recommended.js
       stylistic.configs.recommended,                    // https://github.com/eslint-stylistic/eslint-stylistic/blob/main/packages/eslint-plugin/configs/customize.ts
       tseslint.configs.strictTypeChecked,               // https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/flat/strict-type-checked.ts
-      tseslint.configs.stylisticTypeChecked,            // https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/stylistic.ts
+      tseslint.configs.stylisticTypeChecked,            // https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/flat/stylistic-type-checked.ts
       ngeslint.configs.tsRecommended,                   // https://github.com/angular-eslint/angular-eslint/blob/main/packages/eslint-plugin/src/configs/recommended.json
       eslintPluginUnicorn.configs.recommended,          // https://github.com/sindresorhus/eslint-plugin-unicorn?tab=readme-ov-file#rules
       jsdoc.configs['flat/recommended-typescript']
@@ -100,6 +101,7 @@ export default tseslint.config(
       'no-shadow-restricted-names': 'error',
       'no-sparse-arrays': 'error',
       'no-this-before-super': 'error',
+      'no-unassigned-vars': 'error',
       'no-undef': 'error',
       'no-unexpected-multiline': 'error',
       'no-unreachable': 'error',
@@ -109,10 +111,12 @@ export default tseslint.config(
       'no-unused-labels': 'error',
       'no-unused-private-class-members': 'error',
       'no-unused-vars': 'error',
+      'no-useless-assignment': 'error',
       'no-useless-backreference': 'error',
       'no-useless-catch': 'error',
       'no-useless-escape': 'error',
       'no-with': 'error',
+      'preserve-caught-error': 'error',
       'require-yield': 'error',
       'use-isnan': 'error',
       'valid-typeof': 'error',
@@ -134,15 +138,12 @@ export default tseslint.config(
       //   ArrayExpression: 1,
       //   CallExpression: { arguments: 1 },
       //   flatTernaryExpressions: false,
-      //   FunctionDeclaration: { body: 1, parameters: 1 },
-      //   FunctionExpression: { body: 1, parameters: 1 },
+      //   FunctionDeclaration: { body: 1, parameters: 1, returnType: 1 },
+      //   FunctionExpression: { body: 1, parameters: 1, returnType: 1 },
       //   ignoreComments: false,
       //   ignoredNodes: [
       //     'TSUnionType',
       //     'TSIntersectionType',
-      //     'TSTypeParameterInstantiation',
-      //     'FunctionExpression > .params[decorators.length > 0]',
-      //     'FunctionExpression > .params > :matches(Decorator, :not(:first-child))',
       //   ],
       //   ImportDeclaration: 1,
       //   MemberExpression: 1,
@@ -198,7 +199,7 @@ export default tseslint.config(
       '@stylistic/operator-linebreak': ['error', 'before'],
       // '@stylistic/padded-blocks': ['error', { blocks: 'never', classes: 'never', switches: 'never' }],
       // '@stylistic/quote-props': ['error', 'consistent-as-needed'],
-      // '@stylistic/quotes': ['error', 'single', { allowTemplateLiterals: true, avoidEscape: false }],
+      // '@stylistic/quotes': ['error', 'single', { allowTemplateLiterals: 'always', avoidEscape: false }],
       '@stylistic/rest-spread-spacing': ['error', 'never'],
       // '@stylistic/semi': ['error', 'never'],
       '@stylistic/semi-spacing': ['error', { after: true, before: false }],
@@ -268,6 +269,7 @@ export default tseslint.config(
       '@typescript-eslint/no-unnecessary-type-arguments': 'error',
       '@typescript-eslint/no-unnecessary-type-assertion': 'error',
       '@typescript-eslint/no-unnecessary-type-constraint': 'error',
+      '@typescript-eslint/no-unnecessary-type-conversion': 'error',
       '@typescript-eslint/no-unnecessary-type-parameters': 'error',
       '@typescript-eslint/no-unsafe-argument': 'error',
       '@typescript-eslint/no-unsafe-assignment': 'error',
@@ -284,6 +286,7 @@ export default tseslint.config(
       // '@typescript-eslint/no-unused-vars': 'error',
       'no-useless-constructor': 'off',
       // '@typescript-eslint/no-useless-constructor': 'error',
+      '@typescript-eslint/no-useless-default-assignment': 'error',
       '@typescript-eslint/no-wrapper-object-types': 'error',
       'no-throw-literal': 'off',
       '@typescript-eslint/only-throw-error': 'error',
@@ -337,7 +340,7 @@ export default tseslint.config(
       '@typescript-eslint/consistent-indexed-object-style': 'error',
       '@typescript-eslint/consistent-type-assertions': 'error',
       '@typescript-eslint/consistent-type-definitions': 'error',
-      'dot-notation': 'off',
+      // 'dot-notation': 'off',
       // '@typescript-eslint/dot-notation': 'error',
       // '@typescript-eslint/no-confusing-non-null-assertion': 'error',
       'no-empty-function': 'off',
@@ -374,6 +377,8 @@ export default tseslint.config(
       'unicorn/consistent-empty-array-spread': 'error',
       'unicorn/consistent-existence-index-check': 'error',
       'unicorn/consistent-function-scoping': 'error',
+      'unicorn/consistent-template-literal-escape': 'error',
+      'unicorn/dom-node-dataset': 'error',
       'unicorn/empty-brace-spaces': 'error',
       'unicorn/error-message': 'error',
       'unicorn/escape-case': 'error',
@@ -381,6 +386,7 @@ export default tseslint.config(
       'unicorn/explicit-length-check': 'error',
       'unicorn/filename-case': 'error',
       'unicorn/import-style': 'error',
+      'unicorn/isolated-functions': 'error',
       'unicorn/new-for-builtins': 'error',
       'unicorn/no-abusive-eslint-disable': 'error',
       'unicorn/no-accessor-recursion': 'error',
@@ -389,6 +395,8 @@ export default tseslint.config(
       // 'unicorn/no-array-for-each': 'error',
       'unicorn/no-array-method-this-argument': 'error',
       'unicorn/no-array-reduce': 'error',
+      'unicorn/no-array-reverse': 'error',
+      'unicorn/no-array-sort': 'error',
       'unicorn/no-await-expression-member': 'error',
       'unicorn/no-await-in-promise-methods': 'error',
       'unicorn/no-console-spaces': 'error',
@@ -396,6 +404,7 @@ export default tseslint.config(
       'unicorn/no-empty-file': 'error',
       'unicorn/no-for-loop': 'error',
       'unicorn/no-hex-escape': 'error',
+      'unicorn/no-immediate-mutation': 'error',
       'unicorn/no-instanceof-builtins': 'error',
       'unicorn/no-invalid-fetch-options': 'error',
       'unicorn/no-invalid-remove-event-listener': 'error',
@@ -422,8 +431,10 @@ export default tseslint.config(
       'unicorn/no-unnecessary-slice-end': 'error',
       'unicorn/no-unreadable-array-destructuring': 'error',
       'unicorn/no-unreadable-iife': 'error',
+      'unicorn/no-useless-collection-argument': 'error',
       'unicorn/no-useless-error-capture-stack-trace': 'error',
       'unicorn/no-useless-fallback-in-spread': 'error',
+      'unicorn/no-useless-iterator-to-array': 'error',
       'unicorn/no-useless-length-check': 'error',
       'unicorn/no-useless-promise-resolve-reject': 'error',
       'unicorn/no-useless-spread': 'error',
@@ -439,13 +450,14 @@ export default tseslint.config(
       'unicorn/prefer-array-index-of': 'error',
       'unicorn/prefer-array-some': 'error',
       'unicorn/prefer-at': 'error',
+      'unicorn/prefer-bigint-literals': 'error',
       'unicorn/prefer-blob-reading-methods': 'error',
       'unicorn/prefer-class-fields': 'error',
+      'unicorn/prefer-classlist-toggle': 'error',
       'unicorn/prefer-code-point': 'error',
       'unicorn/prefer-date-now': 'error',
       'unicorn/prefer-default-parameters': 'error',
       'unicorn/prefer-dom-node-append': 'error',
-      'unicorn/prefer-dom-node-dataset': 'error',
       'unicorn/prefer-dom-node-remove': 'error',
       'unicorn/prefer-dom-node-text-content': 'error',
       'unicorn/prefer-event-target': 'error',
@@ -469,8 +481,10 @@ export default tseslint.config(
       'unicorn/prefer-query-selector': 'error',
       'unicorn/prefer-reflect-apply': 'error',
       'unicorn/prefer-regexp-test': 'error',
+      'unicorn/prefer-response-static-json': 'error',
       'unicorn/prefer-set-has': 'error',
       'unicorn/prefer-set-size': 'error',
+      'unicorn/prefer-simple-condition-first': 'error',
       'unicorn/prefer-single-call': 'error',
       // 'unicorn/prefer-spread': 'error',
       // 'unicorn/prefer-string-raw': 'error',
@@ -486,73 +500,66 @@ export default tseslint.config(
       // 'unicorn/prevent-abbreviations': 'error',
       'unicorn/relative-url-style': 'error',
       'unicorn/require-array-join-separator': 'error',
+      'unicorn/require-module-attributes': 'error',
+      'unicorn/require-module-specifiers': 'error',
       'unicorn/require-number-to-fixed-digits-argument': 'error',
       // 'unicorn/switch-case-braces': 'error',
+      'unicorn/switch-case-break-position': 'error',
       'unicorn/template-indent': 'error',
       'unicorn/text-encoding-identifier-case': 'error',
       'unicorn/throw-new-error': 'error'
 */
 /* jsdoc.configs['flat/recommended-typescript'] (not sure if this is complete/correct) *-/
-      'jsdoc/check-access': 1, // Recommended
-      'jsdoc/check-alignment': 1, // Recommended
-      'jsdoc/check-examples': 1,
-      'jsdoc/check-indentation': 1,
-      'jsdoc/check-line-alignment': 1,
-      'jsdoc/check-param-names': 1, // Recommended
-      'jsdoc/check-template-names': 1,
-      'jsdoc/check-property-names': 1, // Recommended
-      'jsdoc/check-syntax': 1,
-      'jsdoc/check-tag-names': 1, // Recommended
-      'jsdoc/check-types': 1, // Recommended
-      'jsdoc/check-values': 1, // Recommended
-      'jsdoc/empty-tags': 1, // Recommended
-      'jsdoc/implements-on-classes': 1, // Recommended
-      'jsdoc/informative-docs': 1,
-      'jsdoc/match-description': 1,
-      'jsdoc/multiline-blocks': 1, // Recommended
-      'jsdoc/no-bad-blocks': 1,
-      'jsdoc/no-blank-block-descriptions': 1,
+      'jsdoc/check-access': 1,
+      'jsdoc/check-alignment': 1,
+      'jsdoc/check-param-names': 1,
+      'jsdoc/check-property-names': 1,
+      'jsdoc/check-tag-names': 1,
+      'jsdoc/check-types': 1,
+      'jsdoc/check-values': 1,
+      'jsdoc/empty-tags': 1,
+      'jsdoc/escape-inline-tags': 1,
+      'jsdoc/implements-on-classes': 1,
+      'jsdoc/multiline-blocks': 1,
       'jsdoc/no-defaults': 1,
-      'jsdoc/no-missing-syntax': 1,
-      'jsdoc/no-multi-asterisks': 1, // Recommended
-      'jsdoc/no-restricted-syntax': 1,
-      'jsdoc/no-types': 1,
-      'jsdoc/require-asterisk-prefix': 1,
-      'jsdoc/require-description': 1,
-      'jsdoc/require-description-complete-sentence': 1,
-      'jsdoc/require-example': 1,
-      'jsdoc/require-file-overview': 1,
-      'jsdoc/require-hyphen-before-param-description': 1,
-      // 'jsdoc/require-jsdoc': 1, // Recommended
-      // 'jsdoc/require-param': 1, // Recommended
-      'jsdoc/require-param-description': 1, // Recommended
-      'jsdoc/require-param-name': 1, // Recommended
-      'jsdoc/require-property': 1, // Recommended
-      'jsdoc/require-property-description': 1, // Recommended
-      'jsdoc/require-property-name': 1, // Recommended
-      // 'jsdoc/require-returns': 1, // Recommended
-      'jsdoc/require-returns-check': 1, // Recommended
-      'jsdoc/require-returns-description': 1, // Recommended
-      'jsdoc/require-template': 1,
-      'jsdoc/require-throws': 1,
-      'jsdoc/require-yields': 1, // Recommended
-      'jsdoc/require-yields-check': 1, // Recommended
-      'jsdoc/sort-tags': 1,
-      // 'jsdoc/tag-lines': 1, // Recommended
-      'jsdoc/valid-types': 1 // Recommended
+      'jsdoc/no-multi-asterisks': 1,
+      'jsdoc/no-undefined-types': 1,   (turned off in recommended settings?)
+      'jsdoc/reject-any-type': 1,
+      'jsdoc/reject-function-type': 1,
+      // 'jsdoc/require-jsdoc': 1,
+      'jsdoc/require-next-type': 1,
+      // 'jsdoc/require-param': 1,
+      'jsdoc/require-param-description': 1,
+      'jsdoc/require-param-name': 1,
+      'jsdoc/require-param-type': 1,   (turned off in recommended settings?)
+      'require-property': 1,
+      'require-property-description': 1,
+      'require-property-name': 1,
+      'jsdoc/require-property-type': 1,    (turned off in recommended settings?)
+      // 'jsdoc/require-returns': 1,
+      'jsdoc/require-returns-check': 1,
+      'jsdoc/require-returns-description': 1,
+      'jsdoc/require-returns-type': 1,   (turned off in recommended settings?)
+      'jsdoc/require-throws-type': 1,
+      'jsdoc/require-yields': 1,
+      'jsdoc/require-yields-check': 1,
+      'jsdoc/require-yields-type': 1,
+      // 'jsdoc/tag-lines': 1,
+      'jsdoc/ts-no-empty-object-type': 1,
+      'jsdoc/valid-types': 1
 */
       'arrow-body-style': 'off',
-      '@stylistic/brace-style': [    /* Overrides the 'recommended' setting */
+      '@stylistic/brace-style': [     /* Overrides the 'recommended' setting */
         'error',
         '1tbs',
         {
-          'allowSingleLine': true
+          allowSingleLine: true
         }
       ],
       'unicorn/catch-error-name': [    /* Overrides the 'recommended' setting */
         'error',
         {
-          'ignore': ['^ex$']
+          ignore: ['^ex$']
         }
       ],
       '@stylistic/comma-dangle': [    /* Overrides the 'recommended' setting */
@@ -562,7 +569,7 @@ export default tseslint.config(
       '@angular-eslint/component-class-suffix': [
         'error',
         {
-          'suffixes': [
+          suffixes: [
             'Page',
             'Component'
           ]
@@ -571,17 +578,17 @@ export default tseslint.config(
       '@angular-eslint/component-selector': [
         'error',
         {
-          'type': 'element',
-          'prefix': 'app',
-          'style': 'kebab-case'
+          type: 'element',
+          prefix: 'app',
+          style: 'kebab-case'
         }
       ],
       '@angular-eslint/directive-selector': [
         'error',
         {
-          'type': 'attribute',
-          'prefix': 'app',
-          'style': 'camelCase'
+          type: 'attribute',
+          prefix: 'app',
+          style: 'camelCase'
         }
       ],
       '@typescript-eslint/dot-notation': 'off',    /* Overrides the 'recommended' setting */
@@ -593,10 +600,10 @@ export default tseslint.config(
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
         {
-          'accessibility': 'explicit',
-          'overrides': {
-            'accessors': 'explicit',
-            'constructors': 'no-public'
+          accessibility: 'explicit',
+          overrides: {
+            accessors: 'explicit',
+            constructors: 'no-public'
           }
         }
       ],
@@ -610,11 +617,11 @@ export default tseslint.config(
       '@stylistic/max-len': [
         'warn',
         {
-          'code': 140,
-          'ignoreComments': true,
-          'ignorePattern': '^import ',
-          'ignoreStrings': true,
-          'ignoreTemplateLiterals': true
+          code: 140,
+          ignoreComments: true,
+          ignorePattern: '^import ',
+          ignoreStrings: true,
+          ignoreTemplateLiterals: true
         }
       ],
       '@stylistic/member-delimiter-style': [    /* Overrides the 'recommended' setting */
@@ -641,7 +648,7 @@ export default tseslint.config(
       '@typescript-eslint/member-ordering': [
         'warn',
         {
-          'default': [
+          default: [
             // Index signature
             'signature',
 
@@ -718,8 +725,8 @@ export default tseslint.config(
       '@typescript-eslint/naming-convention': [
         'warn',
         {
-          'selector': 'enumMember',
-          'format': [
+          selector: 'enumMember',
+          format: [
             'StrictPascalCase'
           ]
         }
@@ -729,7 +736,7 @@ export default tseslint.config(
       '@typescript-eslint/no-confusing-void-expression': [  /* Overrides the 'recommended' setting */
         'error',
         {
-          'ignoreArrowShorthand': true
+          ignoreArrowShorthand: true
         }
       ],
       'no-console': 'warn',
@@ -745,8 +752,8 @@ export default tseslint.config(
       '@typescript-eslint/no-extraneous-class': [    /* Overrides the 'recommended' setting */
         'error',
         {
-          'allowConstructorOnly': true,
-          'allowWithDecorator': true
+          allowConstructorOnly: true,
+          allowWithDecorator: true
         }
       ],
       '@typescript-eslint/no-inferrable-types': 'off',  /* Overrides the 'recommended' setting */
@@ -754,9 +761,9 @@ export default tseslint.config(
       '@typescript-eslint/no-magic-numbers': [
         'warn',
         {
-          'ignore': [ -1, 0, 1 ],
-          'ignoreEnums': true,
-          'ignoreReadonlyClassProperties': true
+          ignore: [ -1, 0, 1 ],
+          ignoreEnums: true,
+          ignoreReadonlyClassProperties: true
         }
       ],
       '@stylistic/no-multi-spaces': 'off',    /* Overrides the 'recommended' setting */
@@ -771,7 +778,7 @@ export default tseslint.config(
       '@typescript-eslint/no-shadow': [
         'error',
         {
-          'ignoreTypeValueShadow': true
+          ignoreTypeValueShadow: true
         }
       ],
       '@stylistic/no-trailing-spaces': 'warn',    /* Overrides the 'recommended' setting */
@@ -779,13 +786,13 @@ export default tseslint.config(
       '@typescript-eslint/no-unused-expressions': [    /* Overrides the 'recommended' setting */
         'warn',
         {
-          'allowTernary': true
+          allowTernary: true
         }
       ],
       '@typescript-eslint/no-unused-vars': [  /* Overrides the 'recommended' setting */
         'warn',
         {
-          'argsIgnorePattern': '^_'
+          argsIgnorePattern: '^_'
         }
       ],
       '@typescript-eslint/no-useless-constructor': 'warn',      /* Overrides the 'recommended' setting */
@@ -793,14 +800,14 @@ export default tseslint.config(
       'unicorn/no-useless-undefined': [             /* Overrides the 'recommended' setting, since fix can be invalid */
         'error',
         {
-          'checkArguments': false
+          checkArguments: false
         }
       ],
       'no-warning-comments': 'warn',
       'unicorn/numeric-separators-style': [         /* Overrides the 'recommended' setting */
         'warn',
         {
-          'onlyIfContainsSeparator': true
+          onlyIfContainsSeparator: true
         }
       ],
       '@stylistic/padded-blocks': 'warn',         /* Overrides the 'recommended' setting */
@@ -808,8 +815,8 @@ export default tseslint.config(
       // 'prefer-arrow/prefer-arrow-functions': [
       //   'warn',
       //   {
-      //     'singleReturnOnly': true,
-      //     'allowStandaloneDeclarations': true
+      //     singleReturnOnly: true,
+      //     allowStandaloneDeclarations: true
       //   }
       // ],
 // TODO: now in recommended
@@ -827,20 +834,20 @@ export default tseslint.config(
       'jsdoc/require-jsdoc': [        /* Overrides the 'recommended' setting */
         'warn',
         {
-          'publicOnly': true
+          publicOnly: true
         }
       ],
       'jsdoc/require-param': [        /* Overrides the 'recommended' setting */
         'warn',
         {
-          'ignoreWhenAllParamsMissing': true
+          ignoreWhenAllParamsMissing: true
         }
       ],
       'jsdoc/require-returns': [        /* Overrides the 'recommended' setting */
         'warn',
         {
-          'publicOnly': true,
-          'checkGetters': false
+          publicOnly: true,
+          checkGetters: false
         }
       ],
       '@stylistic/quote-props': [        /* Overrides the 'recommended' setting */
@@ -855,15 +862,15 @@ export default tseslint.config(
         'error',
         'always',
         {
-          'omitLastInOneLineBlock': true
+          omitLastInOneLineBlock: true
         }
       ],
       'sort-imports': [
         'warn',
         {
-          'ignoreCase': true,
-          'ignoreDeclarationSort': true,
-          'allowSeparatedGroups': true
+          ignoreCase: true,
+          ignoreDeclarationSort: true,
+          allowSeparatedGroups: true
         }
       ],
       '@stylistic/spaced-comment': [    /* Overrides the 'recommended' setting */
@@ -898,15 +905,15 @@ export default tseslint.config(
         'warn',
         'any',
         {
-          'startLines': 1
+          startLines: 1
         }
       ],
 // TODO: deprecated but need to find another way of forcing this (`noImplicitAny` in tsconfig.json doesn't seem to work?)
       '@typescript-eslint/typedef': [
         'error',
         {
-          // 'arrowParameter': true,
-          'variableDeclaration': true
+          // arrowParameter: true,
+          variableDeclaration: true
         }
       ],
       '@typescript-eslint/unified-signatures': 'off'   /* Overrides the 'recommended' setting */
@@ -915,9 +922,9 @@ export default tseslint.config(
   {
     files: ['**/*.html'],
     extends: [
-      ...ngeslint.configs.templateRecommended,
-      ...ngeslint.configs.templateAccessibility
+      ngeslint.configs.templateRecommended,
+      ngeslint.configs.templateAccessibility
     ],
     rules: {}
   }
-);
+]);

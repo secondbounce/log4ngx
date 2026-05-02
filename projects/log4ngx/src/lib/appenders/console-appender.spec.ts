@@ -21,12 +21,12 @@ describe('ConsoleAppender', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({});
 
-    spyOn(console, 'debug');
-    spyOn(console, 'error');
-    spyOn(console, 'info');
-    spyOn(console, 'log');
-    spyOn(console, 'trace');
-    spyOn(console, 'warn');
+    vi.spyOn(console, 'debug');
+    vi.spyOn(console, 'error');
+    vi.spyOn(console, 'info');
+    vi.spyOn(console, 'log');
+    vi.spyOn(console, 'trace');
+    vi.spyOn(console, 'warn');
   });
 
   it('should render debug messages via console.debug()', () => {

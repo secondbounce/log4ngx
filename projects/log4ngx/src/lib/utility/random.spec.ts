@@ -26,7 +26,7 @@ describe('Random', () => {
         length, we can be fairly sure it works.
       */
       const randomString: string = Random.getString(1000, true);
-      expect(/[^\dA-Za-z]/.test(randomString)).toBeFalse();
+      expect(/[^\dA-Za-z]/.test(randomString)).toBeFalsy();
     });
 
     it('should return non-alphanumeric chars if `alphaNumericOnly` is false', () => {
@@ -34,7 +34,7 @@ describe('Random', () => {
         length, we can be fairly sure it works.
       */
       const randomString: string = Random.getString(1000, false);
-      expect(/[^\dA-Za-z]/.test(randomString)).toBeTrue();
+      expect(/[^\dA-Za-z]/.test(randomString)).toBeTruthy();
     });
   });
 });

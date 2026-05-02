@@ -83,7 +83,7 @@ describe('LocalStorageAppender', () => {
     const keyPrefix: string = Random.getString(RANDOM_KEY_LENGTH, true);
     const appender: LocalStorageAppender = getConfiguredLocalStorageAppender({ keyPrefix });
 
-    expect(appender.currentKey.startsWith(keyPrefix)).toBeTrue();
+    expect(appender.currentKey.startsWith(keyPrefix)).toBeTruthy();
   });
 
   it('should log entries using key prefix and today\'s timestamp', () => {
@@ -101,7 +101,7 @@ describe('LocalStorageAppender', () => {
     const today: Date = new Date();
 
     expect(localStorage.length).toBe(1);
-    expect(key.startsWith(prefix)).toBeTrue();
+    expect(key.startsWith(prefix)).toBeTruthy();
     expect(timestamp).not.toBeNaN();
     expect(date.getFullYear()).toBe(today.getFullYear());
     expect(date.getMonth()).toBe(today.getMonth());
@@ -127,14 +127,16 @@ describe('LocalStorageAppender', () => {
     expect(localStorage.length).toBe(1);
 
     const key: string = localStorage.key(0) ?? '';
-    expect(key.startsWith(appender.keyPrefix)).toBeTrue();
+    expect(key.startsWith(appender.keyPrefix)).toBeTruthy();
 
     const logEntries: string = localStorage.getItem(key) ?? '';
     expect(logEntries).toBe(message1 + appender.logEntryDelimiter + message2);
   });
 
   it('should only remove log entries when > max days exists at initialization', () => {
-    jasmine.clock().withMock(() => {
+    try {
+      vi.useFakeTimers();
+
       const yesterdayTimestamp: number = Date.now();
       let appender: LocalStorageAppender = new LocalStorageAppender();
       appender.initialize({ ...APPENDER_CONFIG,
@@ -145,7 +147,7 @@ describe('LocalStorageAppender', () => {
         for today with reduced `maxDays`, we're left with the correct number of entries.
       */
       for (let i: number = appender.maxDays - 1; i >= 0; i--) {
-        jasmine.clock().mockDate(new Date(yesterdayTimestamp - (i * MILLISECS_PER_DAY)));
+        vi.setSystemTime(new Date(yesterdayTimestamp - (i * MILLISECS_PER_DAY)));
 
         const message: string = Random.getString(RANDOM_MESSAGE_LENGTH);
         const loggingEvent: LoggingEvent = new LoggingEvent(Level.debug, '', message);
@@ -158,17 +160,21 @@ describe('LocalStorageAppender', () => {
       appender = new LocalStorageAppender();
       appender.initialize(APPENDER_CONFIG);
       expect(localStorage.length).toBe(appender.maxDays);
-    });
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('should remove log entries when max days is exceeded on appending new entries', () => {
-    jasmine.clock().withMock(() => {
+    try {
+      vi.useFakeTimers();
+
       const todayTimestamp: number = Date.now();
       const appender: LocalStorageAppender = new LocalStorageAppender();
       appender.initialize(APPENDER_CONFIG);
 
       for (let i: number = DAYS_LOGS_TO_TEST - 1; i >= 0; i--) {
-        jasmine.clock().mockDate(new Date(todayTimestamp - (i * MILLISECS_PER_DAY)));
+        vi.setSystemTime(new Date(todayTimestamp - (i * MILLISECS_PER_DAY)));
 
         const message: string = Random.getString(RANDOM_MESSAGE_LENGTH);
         const loggingEvent: LoggingEvent = new LoggingEvent(Level.debug, '', message);
@@ -176,11 +182,15 @@ describe('LocalStorageAppender', () => {
 
         expect(localStorage.length).toBe(Math.min(appender.maxDays, DAYS_LOGS_TO_TEST - i));
       }
-    });
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('should remove log entries when storage quota is exceeded', () => {
-    jasmine.clock().withMock(() => {
+    try {
+      vi.useFakeTimers();
+
       const todayTimestamp: number = Date.now();
       const maxDays: number = QUOTA_TESTING_MESSAGE_COUNT;  /* Make sure logs aren't cleaned up */
       const appender: LocalStorageAppender = getConfiguredLocalStorageAppender({ maxDays });
@@ -193,7 +203,7 @@ describe('LocalStorageAppender', () => {
         storage, proving that space must have be released.
       */
       for (let i: number = QUOTA_TESTING_MESSAGE_COUNT - 1; i >= 0; i--) {
-        jasmine.clock().mockDate(new Date(todayTimestamp - (i * MILLISECS_PER_DAY)));
+        vi.setSystemTime(new Date(todayTimestamp - (i * MILLISECS_PER_DAY)));
 
         message = Random.getString(QUOTA_TESTING_MESSAGE_LENGTH);
         const loggingEvent: LoggingEvent = new LoggingEvent(Level.debug, '', message);
@@ -202,7 +212,9 @@ describe('LocalStorageAppender', () => {
 
       const latestLogEntries: string = localStorage.getItem(appender.currentKey) ?? '';
       expect(latestLogEntries).toBe(message);
-    });
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('should fail gracefully when storage quota is exceeded and no log entries can be removed', () => {

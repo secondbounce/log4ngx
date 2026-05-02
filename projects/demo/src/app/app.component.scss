@@ -32,11 +32,13 @@ p {
 
 .left-side {
   margin-inline-end: 1.5em;
-  width: 35rem;
+  width: 13rem;
+  min-width: 13rem;
 }
 
 .divider {
   width: 1px;
+  min-width: 1px;
   background: var(--red-to-pink-to-purple-vertical-gradient);
 }
 
@@ -47,7 +49,6 @@ p {
 @media screen and (max-width: 650px) {
   .content {
     flex-direction: column;
-    width: max-content;
   }
 
   .left-side {
