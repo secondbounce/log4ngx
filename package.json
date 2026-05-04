@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@angular/build": "^21.2.0",
-    "@angular/cli": "^21.2.0",
+    "@angular/cli": "^21.2.9",
     "@angular/compiler-cli": "^21.2.0",
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
