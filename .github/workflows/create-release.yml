@@ -68,15 +68,15 @@ jobs:
           echo "version=$rctag" >> "$GITHUB_OUTPUT"
 
       - name: Update package version to ${{ steps.get-version.outputs.version }}
-        uses: BellCubeDev/update-package-version-by-release-tag@1f8aff46e596cd4f81166e8e437e5a117cab20bc # v2
-        with:
-          version: ${{ steps.get-version.outputs.version }}
-
-      - name: Update library package version to ${{ steps.get-version.outputs.version }}
-        uses: BellCubeDev/update-package-version-by-release-tag@1f8aff46e596cd4f81166e8e437e5a117cab20bc # v2
-        with:
-          version: ${{ steps.get-version.outputs.version }}
-          package-json-path: './projects/log4ngx/package.json'
+        # Allowing npm to commit the changes isn't ideal; we want to commit both updated
+        # package.json files together, but npm only commits the files changed by the
+        # individual command, so we'd end up with 2 separate commits.  Also, it tags the
+        # commit with the version number prefixed with "v", which is not wanted.
+        run: |
+          npm version ${{ steps.get-version.outputs.version }} --no-git-tag-version
+          cd ./projects/log4ngx
+          npm version ${{ steps.get-version.outputs.version }} --no-git-tag-version
+          cd ../..
 
       - name: Commit updated package
         uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
@@ -87,7 +87,7 @@ jobs:
           commit_user_email: ${{ github.actor }}@users.noreply.github.com
 
       - name: Remove original git tag
-        # The deletes the original prefixed tag on the remote (origin) repo but
+        # This deletes the original prefixed tag on the remote (origin) repo but
         # obviously doesn't remove it from any local repos that created/pulled
         # the tag beforehand.  That shouldn't be an issue though, as we're only
         # tidying it up because it's redundant.
