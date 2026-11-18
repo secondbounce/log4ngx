@@ -9,9 +9,7 @@ describe('Level', () => {
   });
 
   it('should define initial default levels', () => {
-    let level: Level | undefined;
-
-    level = Level.getLevel('off');
+    let level: Level | undefined = Level.getLevel('off');
     expect(level).toEqual(Level.off);
 
     level = Level.getLevel('fatal');
@@ -63,9 +61,7 @@ describe('Level', () => {
   });
 
   it('returns undefined for non-existent levels', () => {
-    let nonexistentLevel: Level | undefined;
-
-    nonexistentLevel = Level.getLevel('£$%^&*(');
+    let nonexistentLevel: Level | undefined = Level.getLevel('£$%^&*(');
     expect(nonexistentLevel).toBeUndefined();
 
     nonexistentLevel = Level.getLevel('');

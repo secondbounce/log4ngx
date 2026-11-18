@@ -263,9 +263,8 @@ describe('LogService', () => {
       const belowInfoLevel: Level = Level.add(LevelValue.Info - 1, 'below-info', 'below-info');
       const aboveInfoLevel: Level = Level.add(LevelValue.Info + 1, 'above-info', 'above-info');
       const logger: Logger = logService.getLogger(MOCK_LOGGER_NAME);
-      let message: string;
 
-      message = Random.getString(RANDOM_MESSAGE_LENGTH);
+      let message: string = Random.getString(RANDOM_MESSAGE_LENGTH);
       logger.debug(message);
       expect(MockAppender.lastOutput).toBe('');
 
@@ -318,9 +317,8 @@ describe('LogService', () => {
       logService.configure(logServiceConfig);
 
       const logger: Logger = logService.getLogger(MOCK_LOGGER_NAME);
-      let message: string;
 
-      message = Random.getString(RANDOM_MESSAGE_LENGTH);
+      let message: string = Random.getString(RANDOM_MESSAGE_LENGTH);
       logger.debug(message);
       expect(MockAppender.lastOutput).toBe('');
 

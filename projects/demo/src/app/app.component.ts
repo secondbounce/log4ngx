@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Logger, LogService } from 'log4ngx';
 
@@ -6,7 +6,6 @@ import { Logger, LogService } from 'log4ngx';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterOutlet
   ]

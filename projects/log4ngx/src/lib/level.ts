@@ -28,12 +28,12 @@ export class Level {
 
   private static initializeLevels(): Map<string, Level> {
     return new Map<string, Level>([
-      [this.off.name.toLowerCase(), this.off],
-      [this.fatal.name.toLowerCase(), this.fatal],
-      [this.error.name.toLowerCase(), this.error],
-      [this.warn.name.toLowerCase(), this.warn],
-      [this.info.name.toLowerCase(), this.info],
-      [this.debug.name.toLowerCase(), this.debug]
+      [Level.off.name.toLowerCase(), Level.off],
+      [Level.fatal.name.toLowerCase(), Level.fatal],
+      [Level.error.name.toLowerCase(), Level.error],
+      [Level.warn.name.toLowerCase(), Level.warn],
+      [Level.info.name.toLowerCase(), Level.info],
+      [Level.debug.name.toLowerCase(), Level.debug]
     ]);
   }
 
@@ -52,7 +52,7 @@ export class Level {
 
     const key: string = name.toLowerCase();
 
-    if (this._levels.has(key)) {
+    if (Level._levels.has(key)) {
       console.error(`LOG4NGX: A level has already been defined with the name '${key}'`);
       throw new Error(`LOG4NGX: A level has already been defined with the name '${key}'`);
     }
@@ -60,7 +60,7 @@ export class Level {
     Level.ensureDisplayNameValid(displayName);
 
     const level: Level = new Level(value, name, displayName);
-    this._levels.set(key, level);
+    Level._levels.set(key, level);
 
     return level;
   }
@@ -71,7 +71,7 @@ export class Level {
       console.error('LOG4NGX: No level name specified');
     }
 
-    const level: Level | undefined = this._levels.get(levelName.toLowerCase());
+    const level: Level | undefined = Level._levels.get(levelName.toLowerCase());
     if (level === undefined) {
       console.error(`LOG4NGX: No level defined for '${levelName.toLowerCase()}'`);
     }

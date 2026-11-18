@@ -24,10 +24,10 @@ import { LoggingEvent } from './logging-event';
   providedIn: 'root'
 })
 export class LogService {
-  private _loggers: Map<string, Logger> = new Map<string, Logger>();
-  private _appenders: Map<string, Appender> = new Map<string, Appender>();
-  private _loggerConfigs: Map<string, LoggerConfig> = new Map<string, LoggerConfig>();
-  private _environmentInjector = inject(EnvironmentInjector);
+  private readonly _loggers: Map<string, Logger> = new Map<string, Logger>();
+  private readonly _appenders: Map<string, Appender> = new Map<string, Appender>();
+  private readonly _loggerConfigs: Map<string, LoggerConfig> = new Map<string, LoggerConfig>();
+  private readonly _environmentInjector: EnvironmentInjector = inject(EnvironmentInjector);
 
   // eslint-disable-next-line @angular-eslint/prefer-inject -- injecting via constructor allows config to be passed in for testing
   constructor(@Inject(LOG_SERVICE_CONFIG_TOKEN) config: LogServiceConfig) {
@@ -44,6 +44,7 @@ export class LogService {
       wrapped in a call to `runInInjectionContext()`, otherwise we'll get the dreaded
       "NG0203: `inject()` must be called from an injection context" error.
     */
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-class-instance-assignment -- Confused since it is created during instantiation
     runInInjectionContext(this._environmentInjector, () => {
       for (const appenderConfig of config.appenders) {
         const appender: Appender = inject(appenderConfig.providerToken);

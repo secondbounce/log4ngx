@@ -94,11 +94,11 @@ describe('Base Appender', () => {
         Level.fatal
       ];
 
-      levels.forEach((level) => {
+      for (const level of levels) {
         level.displayName = `##${level.displayName}##`;
         loggingEvent.level = level;
         expect(appender.renderLoggingEvent(loggingEvent)).toBe(level.displayName);
-      });
+      }
     });
 
     it('should render ' + AppenderPlaceholders.Logger + ' using `name` property', () => {
@@ -332,9 +332,9 @@ describe('Base Appender', () => {
           any package upgrades, etc, will cause this test to fail. So we'll try to use regexes that minimise
           the chance of failure.
         */
-        const pattern: RegExp = globalThis.navigator.userAgent.includes('Edge')
-                                  ? new RegExp(/at TestBedViewEngine\.prototype\.execute/)
-                                  : new RegExp(/appender\.spec\.(ts|js)/);
+        const includesEdge: boolean = globalThis.navigator.userAgent.includes('Edge');
+        const pattern: RegExp = new RegExp(includesEdge ? /at TestBedViewEngine\.prototype\.execute/
+                                                        : /appender\.spec\.(ts|js)/);
         expect(appender.renderLoggingEvent(loggingEvent)).toMatch(pattern);
       }
     });

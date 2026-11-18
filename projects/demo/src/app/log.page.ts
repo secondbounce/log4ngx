@@ -1,5 +1,5 @@
 import { DatePipe, KeyValuePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LOCALSTORAGE_APPENDER_TOKEN, LocalStorageAppender, Logger, LogService } from 'log4ngx';
 
@@ -7,7 +7,6 @@ import { LOCALSTORAGE_APPENDER_TOKEN, LocalStorageAppender, Logger, LogService }
   selector: 'app-log',
   templateUrl: './log.page.html',
   styleUrl: './log.page.scss',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DatePipe,
     KeyValuePipe,
@@ -15,10 +14,10 @@ import { LOCALSTORAGE_APPENDER_TOKEN, LocalStorageAppender, Logger, LogService }
   ]
 })
 export class LogPage implements OnInit {
-  private _localStorageAppender = inject<LocalStorageAppender>(LOCALSTORAGE_APPENDER_TOKEN);
-
   public logEntries: Map<Date, string[]> = new Map<Date, string[]>();
   private readonly _log: Logger;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-class-instance-assignment -- Confused since it's a constant
+  private readonly _localStorageAppender: LocalStorageAppender = inject<LocalStorageAppender>(LOCALSTORAGE_APPENDER_TOKEN);
 
   constructor() {
     const logService: LogService = inject(LogService);

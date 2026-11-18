@@ -1,11 +1,10 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Logger, LogService } from 'log4ngx';
 
 @Component({
   selector: 'app-child',
   templateUrl: './child.page.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterLink
   ]
