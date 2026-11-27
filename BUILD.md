@@ -32,3 +32,34 @@ the new commit to correctly identify it as the source of the release).
 > This does mean that the release author (and anyone pulling the `main` branch after the build tag
 has been added but before the release has been created) will end up with a redundant tag in their
 local repo.  This can safely be ignored/deleted.
+
+## Publishing a new version to NPM
+
+> TODO: replace this with Github workflow
+
+New versions must only be published after the [release has been created](#creating-a-release) and
+the local repository has been updated with the latest commit containing the updated `package.json`
+and `package-lock.json` files.
+
+1. Make sure you're on the `main` branch
+
+  ``` sh
+  git fetch origin
+  git checkout main
+  git merge origin/main
+  ```
+
+2. Build the latest release
+
+  `npm run build-lib`
+
+3. Change to the build output folder
+
+  `cd ./dist/log4ngx`
+
+4. Publish the package to NPM
+
+  ```
+  npm login
+  npm publish --tag beta --dry-run
+  ```
